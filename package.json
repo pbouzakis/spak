@@ -1,0 +1,36 @@
+{
+  "name": "@yuzu/yep-app",
+  "version": "0.0.1",
+  "description": "Modules for building a yep app.",
+  "main": "index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "6to5": "^2.13.1",
+    "chai": ">= 1.0.4",
+    "chai-as-promised": "^4.1.1",
+    "jshint": ">= 0.7.1",
+    "mocha": ">= 1.1.0",
+    "sinon": ">= 1.3.4",
+    "sinon-chai": ">= 2.1.0"
+  },
+  "private": true,
+  "scripts": {
+    "lint": "jshint index.js lib test",
+    "test": "mocha test --recursive",
+    "githooks": "cp pre-* ./.git/hooks"
+  },
+  "author": "YuzuJS",
+  "contributors": [
+    "Paul Bouzakis <PBouzakis@yuzu.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/YuzuJS/yep-app.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/YuzuJS/yep-app/issues"
+  },
+  "homepage": "https://github.com/YuzuJS/yep-app"
+}
