@@ -4,7 +4,9 @@
   "description": "Modules for building a yep app.",
   "main": "index.js",
   "dependencies": {
+    "q": "~0.9.7",
     "through": "^2.3.4",
+    "underscore": "~1.7.0",
   },
   "devDependencies": {
     "6to5": "^2.13.1",

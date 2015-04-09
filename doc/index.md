@@ -1,5 +1,13 @@
 # Docs
 
+## PluginBroker
+
+Allows subscribers to regiseter for application hooks.
+
+### Current hooks
+- startup
+- accountAvailable
+
 ## plugins
 
 ### browserify transform: injectify
