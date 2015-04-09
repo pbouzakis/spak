@@ -1,3 +1,5 @@
 "use strict";
 
-console.log("Coming soon...");
+import injectify from "./lib/plugins/browserify-transforms/injectify";
+
+export { injectify };
