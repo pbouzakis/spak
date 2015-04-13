@@ -1,0 +1,4 @@
+--compilers js:6to5/register
+--reporter spec
+--require test/support/setup
+--check-leaks
