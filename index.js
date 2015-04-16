@@ -1,3 +1,5 @@
 "use strict";
 
-console.log("Coming soon...");
+import PluginBroker from "./lib/PluginBroker";
+
+export { PluginBroker };
