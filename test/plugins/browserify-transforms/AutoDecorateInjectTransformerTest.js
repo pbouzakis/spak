@@ -31,10 +31,10 @@ describe("AutoDecorateInject:", () => {
             beforeEach(() => {
                 var body = getModuleBody(moduleName);
                 this.transformer.write(body);
-                this.expectedDeps = ["foo", "bar", "baz"];
+                this.expectedDeps = ["\"foo\"", "\"bar\"", "\"baz\""];
 
                 if (moduleName.match(/w-opts$/)) {
-                    this.expectedDeps.push("beepOpt", "boopOpt");
+                    this.expectedDeps.push("\"beepOpt\"", "\"boopOpt\"");
                 }
             });
 
