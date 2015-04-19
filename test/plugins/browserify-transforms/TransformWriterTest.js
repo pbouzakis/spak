@@ -21,17 +21,17 @@ describe("TransformWriter:", () => {
         this.writer.should.have.property("body");
     });
 
-    it ("should have the write filename", () => {
+    it("should have the write filename", () => {
         this.writer.filename.should.equal("fooBaz.js");
     });
 
     describe("when adding a decorator", () => {
         beforeEach(() => {
-            this.writer.decorateExport("foo", ["awesome", true]);
+            this.writer.decorateExport("foo", ["\"awesome\"", "true"]);
             this.firstExpectedAnnotation = ` = (foo("awesome", true)(module.exports)) || ${DEFAULT_EXPORT_EXPR};`;
         });
 
-        it ("should appear in the body", () => {
+        it("should appear in the body", () => {
             this.writer.body.should.have.string(DEFAULT_EXPORT_EXPR + this.firstExpectedAnnotation);
         });
 
@@ -41,11 +41,11 @@ describe("TransformWriter:", () => {
                 this.secondExpectedAnnotation = ` = (baz()(module.exports)) || ${DEFAULT_EXPORT_EXPR};`;
             });
 
-            it ("should have the new content in the body", () => {
+            it("should have the new content in the body", () => {
                 this.writer.body.should.have.string(DEFAULT_EXPORT_EXPR + this.secondExpectedAnnotation);
             });
 
-            it ("should still have the first content appended in the body", () => {
+            it("should still have the first content appended in the body", () => {
                 this.writer.body.should.have.string(DEFAULT_EXPORT_EXPR + this.firstExpectedAnnotation);
             });
         });
@@ -57,7 +57,7 @@ describe("TransformWriter:", () => {
             this.firstExpectedPropSet = ".isEnabled = true;";
         });
 
-        it ("should appear in the body", () => {
+        it("should appear in the body", () => {
             this.writer.body.should.have.string(DEFAULT_EXPORT_EXPR + this.firstExpectedPropSet);
         });
 
@@ -67,11 +67,11 @@ describe("TransformWriter:", () => {
                 this.secondExpectedPropSet = ".prototype.anotherValue = { size: \"large\" };";
             });
 
-            it ("should have the new content in the body", () => {
+            it("should have the new content in the body", () => {
                 this.writer.body.should.have.string(DEFAULT_EXPORT_EXPR + this.secondExpectedPropSet);
             });
 
-            it ("should still have the first content appended in the body", () => {
+            it("should still have the first content appended in the body", () => {
                 this.writer.body.should.have.string(DEFAULT_EXPORT_EXPR + this.firstExpectedPropSet);
             });
         });
@@ -83,7 +83,7 @@ describe("TransformWriter:", () => {
             this.writer.appendToBody(this.firstContentToAppend);
         });
 
-        it ("should have the content in the body", () => {
+        it("should have the content in the body", () => {
             this.writer.body.should.have.string(this.firstContentToAppend);
         });
 
@@ -93,11 +93,11 @@ describe("TransformWriter:", () => {
                 this.writer.appendToBody(this.secondContentToAppend);
             });
 
-            it ("should have the new content in the body", () => {
+            it("should have the new content in the body", () => {
                 this.writer.body.should.have.string(this.secondContentToAppend);
             });
 
-            it ("should still have the first content appended in the body", () => {
+            it("should still have the first content appended in the body", () => {
                 this.writer.body.should.have.string(this.firstContentToAppend);
             });
         });
