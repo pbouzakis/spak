@@ -27,7 +27,7 @@ describe("DecorateClass:", () => {
             this.transformer.write(body);
         });
 
-        it ("should add a decorator", () => {
+        it("should add a decorator", () => {
             this.writer.decorateExport.should.have.been.calledWith("beep", []);
         });
     });
@@ -38,10 +38,22 @@ describe("DecorateClass:", () => {
             this.transformer.write(body);
         });
 
-        it ("should add an annotation", () => {
-            this.writer.decorateExport.should.have.been.calledWith("boop", ["blue", true]);
+        it("should add an annotation", () => {
+            this.writer.decorateExport.should.have.been.calledWith("boop", ["\"blue\"", "true"]);
         });
     });
+
+    describe("when decorated with a decorator w/ variables in it's args", () => {
+        beforeEach(() => {
+            var body = getModuleBody("es-variable-in-args-decorated");
+            this.transformer.write(body);
+        });
+
+        it("should add an annotation", () => {
+            this.writer.decorateExport.should.have.been.calledWith("boop", ["obj", "\"blue\"", "true"]);
+        });
+    });
+
 
     describe("when decorated with a multiple decorators", () => {
         beforeEach(() => {
@@ -49,20 +61,20 @@ describe("DecorateClass:", () => {
             this.transformer.write(body);
         });
 
-        it ("should added 3 decorators", () => {
+        it("should added 3 decorators", () => {
             this.writer.decorateExport.should.have.been.calledThrice;
         });
 
-        it ("should add the first decorator w/ the correct args", () => {
+        it("should add the first decorator w/ the correct args", () => {
             this.writer.decorateExport.getCall(0).should.have.been.calledWith("beep", []);
         });
 
-        it ("should add the second decorator w/ the correct args", () => {
-            this.writer.decorateExport.getCall(1).should.have.been.calledWith("boop", [true, 100, "yes"]);
+        it("should add the second decorator w/ the correct args", () => {
+            this.writer.decorateExport.getCall(1).should.have.been.calledWith("boop", ["true", "100", "\"yes\""]);
         });
 
-        it ("should add the thrid decorator w/ the correct args", () => {
-            this.writer.decorateExport.getCall(2).should.have.been.calledWith("baz", ["very", "cool"]);
+        it("should add the thrid decorator w/ the correct args", () => {
+            this.writer.decorateExport.getCall(2).should.have.been.calledWith("baz", ["\"very\"", "\"cool\""]);
         });
     });
 
@@ -72,7 +84,7 @@ describe("DecorateClass:", () => {
             this.transformer.write(body);
         });
 
-        it ("should not add a decorator", () => {
+        it("should not add a decorator", () => {
             this.writer.decorateExport.should.not.have.been.called;
         });
     });
@@ -90,23 +102,23 @@ describe("DecorateClass:", () => {
 
         afterEach(clear);
 
-        it ("should create 2 decorators", () => {
+        it("should create 2 decorators", () => {
             this.writer.decorateExport.should.have.been.calledTwice;
         });
 
-        it ("should add one decorator", () => {
+        it("should add one decorator", () => {
             this.writer.decorateExport.getCall(0).should.have.been.calledWith("ui", []);
         });
 
-        it ("should call back the first transformer", () => {
+        it("should call back the first transformer", () => {
             this.uiTransformer.transform.should.have.been.calledWithMatch({ writer: this.writer });
         });
 
-        it ("should add a second decorator", () => {
-            this.writer.decorateExport.getCall(1).should.have.been.calledWith("custom", ["one", 2]);
+        it("should add a second decorator", () => {
+            this.writer.decorateExport.getCall(1).should.have.been.calledWith("custom", ["\"one\"", "2"]);
         });
 
-        it ("should call back the second transformer", () => {
+        it("should call back the second transformer", () => {
             this.customTransformer.transform.should.have.been.calledWithMatch({ writer: this.writer });
         });
     });
