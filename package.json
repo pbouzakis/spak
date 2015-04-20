@@ -6,7 +6,8 @@
   "dependencies": {
     "q": "~0.9.7",
     "through": "^2.3.4",
-    "underscore": "~1.7.0"
+    "underscore": "~1.7.0",
+    "wire": "~0.10.2"
   },
   "devDependencies": {
     "6to5": "^2.13.1",
