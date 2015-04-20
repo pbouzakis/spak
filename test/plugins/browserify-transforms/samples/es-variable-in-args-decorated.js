@@ -8,3 +8,5 @@ export default function CustomStuff() {
         console.log("show something!");
     };
 }
+
+console.log(obj); // To make jshint happy.
