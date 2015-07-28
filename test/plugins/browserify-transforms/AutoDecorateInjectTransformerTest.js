@@ -5,8 +5,9 @@ import fs from "fs";
 import InjectTransformer from "../../../lib/plugins/browserify-transforms/AutoDecorateInjectTransformer";
 
 var getModuleBody = (nameOfFile) => fs.readFileSync(`${__dirname}/samples/${nameOfFile}.js`, "utf8");
-var validModules = ["node-module-export", "es-module-export",
-                    "node-module-export-w-opts", "es-module-export-w-opts", "es-module-export-deconstruction-w-opts",
+var validModules = ["node-module-export", "es-module-export", "es-class-export",
+                    "node-module-export-w-opts", "es-module-export-w-opts", "es-class-export-w-opts",
+                    "es-module-export-deconstruction-w-opts", "es-class-export-deconstruction-w-opts",
                     "node-multiple-export", "es-multiple-export"];
 
 var noDepsModules = ["node-no-default-export", "es-no-default-export"];
