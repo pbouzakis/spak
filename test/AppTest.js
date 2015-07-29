@@ -39,7 +39,10 @@ describe("App", function () {
     describe("when running the application", () => {
         beforeEach(() => {
             this.componentList = componentsStub();
+            this.user = { email: "good@email.com", id: "ABC" };
+            this.session = { isSession: true, user: this.user };
             this.delegateHandlers = {
+                provideSession: sinon.stub().returns(this.session),
                 onBeforeBootstrapped: sinon.stub(),
                 onBootstrapped: sinon.stub(),
                 onReady: sinon.stub()
@@ -67,6 +70,18 @@ describe("App", function () {
             this.componentList.every((component) => component.bootstrap.calledWithMatch(
                 (specs) => typeof specs.wire === "function" // Checking for a spec like object.
             )).should.be.true;
+        });
+
+        it("should message the app delegate that app has been bootstrapped", () => {
+            this.delegateHandlers.provideSession.should.have.been.called;
+        });
+
+        it("should expose the correct session", () => {
+            App.session().should.equal(this.session);
+        });
+
+        it("should expose the user", () => {
+            App.user().should.equal(this.session.user);
         });
 
         it("should message the app delegate that app has been bootstrapped", () => {
