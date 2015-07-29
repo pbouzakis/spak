@@ -3,7 +3,7 @@
 
 import ViewUINameSetter from "../../../lib/plugins/browserify-transforms/UIComponentNameSetter";
 
-describe("UIComponentNameSetter:", () => {
+describe("UIComponentNameSetter:", function () {
     beforeEach(() => {
         this.writer = {
             filename: "xxxx.js",

@@ -7,7 +7,7 @@ var { register, clear } = DecorateClassTransformer;
 
 var getModuleBody = (nameOfFile) => fs.readFileSync(`${__dirname}/samples/${nameOfFile}.js`, "utf8");
 
-describe("DecorateClass:", () => {
+describe("DecorateClass:", function () {
     beforeEach(() => {
         this.writer = {
             decorateExport: sinon.stub(),

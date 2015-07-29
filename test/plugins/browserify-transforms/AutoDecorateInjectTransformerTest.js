@@ -12,7 +12,7 @@ var validModules = ["node-module-export", "es-module-export", "es-class-export",
 
 var noDepsModules = ["node-no-default-export", "es-no-default-export"];
 
-describe("AutoDecorateInject:", () => {
+describe("AutoDecorateInject:", function () {
     beforeEach(() => {
         this.writer = {
             decorateExport: sinon.stub(),
