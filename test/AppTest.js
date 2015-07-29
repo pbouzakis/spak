@@ -39,7 +39,12 @@ describe("App", function () {
     describe("when running the application", () => {
         beforeEach(() => {
             this.componentList = componentsStub();
-            App.run(new App.Components(...this.componentList), new App.Delegate());
+            this.delegateHandlers = {
+                onBeforeBootstrapped: sinon.stub(),
+                onBootstrapped: sinon.stub(),
+                onReady: sinon.stub()
+            };
+            return App.run(new App.Components(...this.componentList), new App.Delegate(this.delegateHandlers));
         });
 
         afterEach(() => App.terminate());
@@ -54,8 +59,20 @@ describe("App", function () {
             });
         });
 
+        it("should message the app delegate that app is going to be bootstrapped", () => {
+            this.delegateHandlers.onBeforeBootstrapped.should.have.been.called;
+        });
+
         it("should bootstrap the components", () => {
             this.componentList.every((component) => component.bootstrap.called).should.be.true;
+        });
+
+        it("should message the app delegate that app has been bootstrapped", () => {
+            this.delegateHandlers.onBootstrapped.should.have.been.called;
+        });
+
+        it("should message the app delegate that app is ready for action!", () => {
+            this.delegateHandlers.onReady.should.have.been.called;
         });
     });
 });
