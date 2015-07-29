@@ -64,7 +64,9 @@ describe("App", function () {
         });
 
         it("should bootstrap the components", () => {
-            this.componentList.every((component) => component.bootstrap.called).should.be.true;
+            this.componentList.every((component) => component.bootstrap.calledWithMatch(
+                (specs) => typeof specs.wire === "function" // Checking for a spec like object.
+            )).should.be.true;
         });
 
         it("should message the app delegate that app has been bootstrapped", () => {
