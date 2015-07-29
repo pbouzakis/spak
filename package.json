@@ -23,6 +23,13 @@
     "test": "mocha test --recursive",
     "githooks": "cp pre-* ./.git/hooks"
   },
+  "browserify": {
+    "transform": [
+      [
+        "babelify"
+      ]
+    ]
+  },
   "author": "YuzuJS",
   "contributors": [
     "Paul Bouzakis <PBouzakis@yuzu.com>"
