@@ -3,11 +3,19 @@
 
 import App from "../lib/App";
 
+function componentsStub() {
+    return [
+        { metadata: { name: "component-1" }, bootstrap: sinon.stub() },
+        { metadata: { name: "component-2" }, bootstrap: sinon.stub() }
+    ];
+}
+
 describe("App", function () {
     describe("Static API", () => {
         it("should provide static helpers", () => {
             App.should.itself.respondTo("instance");
             App.should.itself.respondTo("run");
+            App.should.itself.respondTo("terminate");
             App.should.itself.respondTo("user");
             App.should.itself.respondTo("session");
             App.should.itself.respondTo("dispatchAction");
@@ -30,7 +38,8 @@ describe("App", function () {
 
     describe("when running the application", () => {
         beforeEach(() => {
-            App.run(new App.Components(), new App.Delegate());
+            this.componentList = componentsStub();
+            App.run(new App.Components(...this.componentList), new App.Delegate());
         });
 
         afterEach(() => App.terminate());
@@ -43,6 +52,10 @@ describe("App", function () {
             it("should throw", () => {
                 (() => App.run(new App.Components(), new App.Delegate())).should.throw(Error);
             });
+        });
+
+        it("should bootstrap the components", () => {
+            this.componentList.every((component) => component.bootstrap.called).should.be.true;
         });
     });
 });
