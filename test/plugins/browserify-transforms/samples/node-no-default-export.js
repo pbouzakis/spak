@@ -1,7 +1,7 @@
 "use strict";
 
 exports.SampleNode = function (foo, bar, baz) {
-    this.do = function () {
+    this.doSomething = function () {
         console.log(foo, bar, baz);
     };
 

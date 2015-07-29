@@ -1,7 +1,7 @@
 "use strict";
 
 export default function SampleNodeWithOpts(foo, bar, baz, beepOpt, boopOpt) {
-    this.do = function () {
+    this.doSomething = function () {
         console.log(foo, bar, baz, beepOpt, boopOpt);
     };
 

@@ -7,7 +7,7 @@ export default class SampleESWithOpts {
         this._boopOpt = boopOpt;
     }
 
-    do() {
+    doSomething() {
         console.log(this._foo, this._bar, this._baz, this._beepOpt, this._boopOpt);
     }
 

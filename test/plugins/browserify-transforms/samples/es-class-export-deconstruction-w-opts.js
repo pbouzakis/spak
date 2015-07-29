@@ -11,7 +11,7 @@ export default class SampleESClassDecOpts {
         this._color = color;
     }
 
-    do() {
+    doSomething() {
         console.log(this._foo, this._bar, this._baz, this._beepOpt, this._boopOpt, this._size, this._color);
     }
 

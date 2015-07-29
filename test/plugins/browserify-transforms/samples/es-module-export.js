@@ -1,7 +1,7 @@
 "use strict";
 
 export default function SampleES(foo, bar, baz) {
-    this.do = function () {
+    this.doSomething = function () {
         console.log(foo, bar, baz);
     };
 

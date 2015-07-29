@@ -7,7 +7,7 @@ export default class SampleES6Class {
         this._baz = baz;
     }
 
-    do() {
+    doSomething() {
         console.log(this._foo, this._bar, this._baz);
     }
 
