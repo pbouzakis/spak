@@ -32,7 +32,8 @@ describe("App", function () {
 
     describe("when running the application", () => {
         beforeEach(() => {
-            this.componentList = componentsStub();
+            this.didSomethingFromAction = sinon.stub();
+            this.componentList = componentsStub(this.didSomethingFromAction);
             this.user = { email: "good@email.com", id: "ABC" };
             this.session = { isSession: true, user: this.user };
             this.delegateHandlers = {
@@ -84,6 +85,44 @@ describe("App", function () {
 
         it("should message the app delegate that app is ready for action!", () => {
             this.delegateHandlers.onReady.should.have.been.called;
+        });
+
+        // Use instance method rather than  static to get promise returned.
+        describe("when an action is triggered that was registered", () => {
+            describe("using it's name", () => {
+                beforeEach(() => {
+                    this.opts = { size: 100 };
+                    // Same as App.dispatchAction(...args)
+                    return App.instance().dispatchAction("doSomething", this.opts);
+                });
+
+                it("should exec the action", () => {
+                    this.didSomethingFromAction.should.have.been.calledWith(this.opts);
+                });
+            });
+
+            describe("using the name provided in the spec.action call", () => {
+                beforeEach(() => {
+                    this.opts = { size: 200 };
+                    return App.instance().dispatchAction("doOtherThing", this.opts);
+                });
+
+                it("should exec the action", () => {
+                    this.didSomethingFromAction.should.have.been.calledWith(this.opts);
+                });
+            });
+
+            describe("and dispatched with multiple arguments", () => {
+                beforeEach(() => {
+                    this.opts = { size: 100 };
+                    this.color = "blue";
+                    return App.instance().dispatchAction("doSomething", this.opts, this.color);
+                });
+
+                it("should exec the action", () => {
+                    this.didSomethingFromAction.should.have.been.calledWith(this.opts, this.color);
+                });
+            });
         });
     });
 });
