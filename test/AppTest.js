@@ -2,13 +2,7 @@
 "use strict";
 
 import App from "../lib/App";
-
-function componentsStub() {
-    return [
-        { metadata: { name: "component-1" }, bootstrap: sinon.stub() },
-        { metadata: { name: "component-2" }, bootstrap: sinon.stub() }
-    ];
-}
+import componentsStub from "./support/componentsStub";
 
 describe("App", function () {
     describe("Static API", () => {
