@@ -1,3 +1,2 @@
 import decorators from "./lib/decorators";
-
-export decorators;
+export default decorators;
