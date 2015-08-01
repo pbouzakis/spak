@@ -4,6 +4,7 @@
   "description": "Modules for building a yep app.",
   "main": "index.js",
   "dependencies": {
+    "pubit-as-promised": "^1.1.2",
     "q": "^1.4.1",
     "through": "^2.3.4",
     "underscore": "^1.7.0",
