@@ -1,6 +1,6 @@
 "use strict";
 
-import PluginBroker from "./lib/PluginBroker";
-import iocSpecBuilder from "./lib/iocSpecBuilder";
+import App from "./lib/App";
+import AppDelegate from "./lib/AppDelegate";
 
-export { PluginBroker, iocSpecBuilder };
+export { App, AppDelegate };
