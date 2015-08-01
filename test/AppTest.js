@@ -87,6 +87,13 @@ describe("App", function () {
             this.delegateHandlers.onReady.should.have.been.called;
         });
 
+        it("should expose a pubsub api on events", () => {
+            App.events.should.respondTo("on");
+            App.events.should.respondTo("off");
+            App.events.should.respondTo("once");
+            App.events.should.respondTo("publish");
+        });
+
         // Use instance method rather than  static to get promise returned.
         describe("when an action is triggered that was registered", () => {
             describe("using it's name", () => {
