@@ -1,5 +1,4 @@
 /*jshint expr: true */
-"use strict";
 
 import App from "../lib/App";
 import componentsStub from "./support/componentsStub";
@@ -36,8 +35,12 @@ describe("App", function () {
             this.componentList = componentsStub(this.didSomethingFromAction);
             this.user = { email: "good@email.com", id: "ABC" };
             this.session = { isSession: true, user: this.user };
+            this.logger = { log: () => {} };
+            this.localizedPath = "localizedPath";
             this.delegateHandlers = {
                 provideSession: sinon.stub().returns(this.session),
+                provideLogger: sinon.stub().returns({ container: () => this.logger }),
+                provideLocalize: sinon.stub().returns({ localize: () => this.localizedPath }),
                 onBeforeBootstrapped: sinon.stub(),
                 onBootstrapped: sinon.stub(),
                 onReady: sinon.stub()
@@ -67,12 +70,28 @@ describe("App", function () {
             )).should.be.true;
         });
 
-        it("should message the app delegate that app has been bootstrapped", () => {
+        it("should message the app delegate to provide session", () => {
             this.delegateHandlers.provideSession.should.have.been.called;
+        });
+
+        it("should message the app delegate to provide logging", () => {
+            this.delegateHandlers.provideLogger.should.have.been.called;
+        });
+
+        it("should message the app delegate to provide localization", () => {
+            this.delegateHandlers.provideLocalize.should.have.been.called;
         });
 
         it("should expose the correct session", () => {
             App.session().should.equal(this.session);
+        });
+
+        it("should support logging", () => {
+            App.logger("ns").should.equal(this.logger);
+        });
+
+        it("should support localization", () => {
+            App.localize("some/path").should.equal(this.localizedPath);
         });
 
         it("should expose the user", () => {
