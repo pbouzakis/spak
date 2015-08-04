@@ -7,7 +7,7 @@ var DEFAULT_EXPORT_EXPR = TransformWriter.DEFAULT_EXPORT_EXPR;
 
 var getModuleBody = (nameOfFile) => fs.readFileSync(`${__dirname}/samples/${nameOfFile}.js`, "utf8");
 
-describe("TransformWriter:", () => {
+describe("TransformWriter:", function () {
     beforeEach(() => {
         var body = getModuleBody("es-module-export");
         this.writer = new TransformWriter("/path/to/my/module/fooBaz.js", body);
