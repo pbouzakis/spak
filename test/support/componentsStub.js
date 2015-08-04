@@ -1,6 +1,6 @@
 export default function componentsStub(cb) {
     class DoSomethingAction {
-        get name() { return "doSomething"; }
+        get componentName() { return "doSomething"; }
         exec(...args) {
             cb(...args);
         }
