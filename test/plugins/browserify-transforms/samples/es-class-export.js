@@ -15,3 +15,5 @@ export default class SampleES6Class {
         console.warn("why are you calling me?");
     }
 }
+
+//# sourceMappingURL=/path/to/file.js.map
