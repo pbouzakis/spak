@@ -1,6 +1,6 @@
 import ProvidedAppDelegate from "./lib/ProvidedAppDelegate";
 import SimpleSession from "./lib/providers/SimpleSession";
-import ConsoleLogger from "./lib/providers/NullLogger";
+import ConsoleLogger from "./lib/providers/ConsoleLogger";
 import NullLogger from "./lib/providers/NullLogger";
 import KeyWordLocalization from "./lib/providers/KeyWordLocalization";
 
