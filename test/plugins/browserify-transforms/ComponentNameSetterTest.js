@@ -1,15 +1,15 @@
 /*jshint expr: true */
 "use strict";
 
-import ViewUINameSetter from "../../../lib/plugins/browserify-transforms/UIComponentNameSetter";
+import ComponentNameSetter from "../../../lib/plugins/browserify-transforms/ComponentNameSetter";
 
-describe("UIComponentNameSetter:", function () {
+describe("ComponentNameSetter:", function () {
     beforeEach(() => {
         this.writer = {
             filename: "xxxx.js",
             appendToDefaultExport: sinon.stub()
         };
-        this.annotator = new ViewUINameSetter(this.writer);
+        this.annotator = new ComponentNameSetter(this.writer);
     });
 
     it("implements transformer", () => {
