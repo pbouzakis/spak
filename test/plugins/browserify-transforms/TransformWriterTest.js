@@ -17,8 +17,13 @@ describe("TransformWriter:", function () {
         this.writer.should.respondTo("decorateExport");
         this.writer.should.respondTo("appendToDefaultExport");
         this.writer.should.respondTo("appendToBody");
+        this.writer.should.have.property("file");
         this.writer.should.have.property("filename");
         this.writer.should.have.property("body");
+    });
+
+    it("should expose the file location", () => {
+        this.writer.file.should.equal("/path/to/my/module/fooBaz.js");
     });
 
     it("should have the write filename", () => {
