@@ -144,7 +144,10 @@ which are described below.
 
 ## App Components
 
-This class expects to be injected with all top level yep app components.
+A yep-app should be broken down into components. Each yep-app component represents
+either a slice of the application (a slice being across the layers (ui, domain, data), a specific function (push-notifications), and even a single module that plugins into another.
+
+When running a yep-app you can specify your components by using the class below which expects to be injected with all top level components.
 
 ```javascript
 var components = App.Components(
@@ -160,19 +163,9 @@ App.run(components, delegate); Provide components as first param to `run`.
 ```
 
 Each component passed to the constructor will be bootstrapped and should
-provide the following hooks.
+implement the `YepAppComponent interface.
 
-```typescript
-interface YepAppComponent {
-    metadata: Object; // Info about the component (The `package.json` can be used);
-    onBeforeAppBootstrapped(bootstrapper: Bootstrapper);
-    bootstrap(): ?Promise<void>; // Optionally return a promise if async is needed.
-    onAppBootstrapped(bootstrapper: Bootstrapper);
-
-    // Optional hooks
-    priority: number; // Components are bootstrapped by priority then placement in the `App.Components` constructor.
-}
-```
+For more see the [YepAppComponent docs.](./app-component.md)
 
 As seen above, some hooks are provided the `Bootstrapper`. Which exposes the interface below:
 ```typescript
