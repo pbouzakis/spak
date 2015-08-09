@@ -211,6 +211,7 @@ interface App.Delegate {
     onBeforeBootstrapped(bootstrapper: YepAppBootstrapper);
     onBootstrapped(bootstrapper: YepAppBootstrapper);
     onReady();
+    handleRunError();
     handleUncaughtError();
     handleRestart();
 }
