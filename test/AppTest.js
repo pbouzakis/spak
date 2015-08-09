@@ -35,12 +35,14 @@ describe("App", function () {
             this.user = { email: "good@email.com", id: "ABC" };
             this.session = { isSession: true, user: this.user };
             this.logger = { log: () => {} };
+            this.uncaughtErrors = { listen: sinon.stub() };
             this.localizedPath = "localizedPath";
             this.delegateHandlers = {
                 startup: sinon.stub(),
                 provideSession: sinon.stub().returns(this.session),
                 provideLogger: sinon.stub().returns({ container: () => this.logger }),
                 provideLocalize: sinon.stub().returns({ localize: () => this.localizedPath }),
+                provideUncaughtErrors: sinon.stub().returns(this.uncaughtErrors),
                 onBeforeBootstrapped: sinon.stub(),
                 onBootstrapped: sinon.stub()
             };
@@ -109,6 +111,10 @@ describe("App", function () {
                 this.delegateHandlers.provideLocalize.should.have.been.called;
             });
 
+            it("should message the app delegate to provide uncaught errors", () => {
+                this.delegateHandlers.provideUncaughtErrors.should.have.been.called;
+            });
+
             it("should expose the correct session", () => {
                 App.session().should.equal(this.session);
             });
@@ -123,6 +129,10 @@ describe("App", function () {
 
             it("should expose the user", () => {
                 App.user().should.equal(this.session.user);
+            });
+
+            it("should ask uncaught errors to listen", () => {
+                this.uncaughtErrors.listen.should.have.been.calledWith(sinon.match.func);
             });
 
             it("should message the app delegate that app has been bootstrapped", () => {
@@ -177,7 +187,6 @@ describe("App", function () {
                     });
                 });
             });
-
         });
     });
 });
