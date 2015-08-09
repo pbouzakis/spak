@@ -208,6 +208,7 @@ interface App.Delegate {
     provideSession();
     provideLogger();
     provideLocalize();
+    provideUncaughtErrors();
     onBeforeBootstrapped(bootstrapper: YepAppBootstrapper);
     onBootstrapped(bootstrapper: YepAppBootstrapper);
     onReady();
