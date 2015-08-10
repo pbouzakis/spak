@@ -19,7 +19,7 @@ Local components will have the npm namespace of `@app` (`@app/push-notifications
 
 ### Top level files
 - package.json (with npm scripts for running githooks, lint, and tests)
-- pre-commit and pre-push githook
+- pre-commit and pre-push githook scripts
 - README.md
 - jshint and gitignore configs
 - index.js
@@ -49,4 +49,21 @@ export { OrderError };
 ```
 The above contains exports for any modules that can be used by other components.
 In addition, a default export class is used when for bootstrapping the component.
+
+The default export should be a class that implements the following interface:
+
+```typescript
+interface YepAppComponent {
+    metadata: { name }; // Info about the component (Minimum is name attribute);
+    bootstrap(): ?Promise<void>; // Optionally return a promise if async is needed.
+
+    // Optional
+    onBeforeAppBootstrapped(bootstrapper: Bootstrapper);
+    onAppBootstrapped(bootstrapper: Bootstrapper);
+    onAppReady();
+    priority: number; // Components are bootstrapped by priority then placement in the `App.Components` constructor.
+}
+```
+
+```
 
