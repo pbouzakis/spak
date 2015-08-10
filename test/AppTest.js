@@ -35,7 +35,12 @@ describe("App", function () {
             this.user = { email: "good@email.com", id: "ABC" };
             this.session = { isSession: true, user: this.user };
             this.logger = { log: () => {} };
-            this.uncaughtErrors = { listen: sinon.stub() };
+            this.triggerError = (err) => this.uncaughtErrorHandler(err);
+            this.uncaughtErrors = {
+                listen: sinon.spy((uncaughtErrorHandler) => {
+                    this.uncaughtErrorHandler = uncaughtErrorHandler;
+                })
+            };
             this.localizedPath = "localizedPath";
             this.delegateHandlers = {
                 startup: sinon.stub(),
@@ -44,7 +49,8 @@ describe("App", function () {
                 provideLocalize: sinon.stub().returns({ localize: () => this.localizedPath }),
                 provideUncaughtErrors: sinon.stub().returns(this.uncaughtErrors),
                 onBeforeBootstrapped: sinon.stub(),
-                onBootstrapped: sinon.stub()
+                onBootstrapped: sinon.stub(),
+                handleUncaughtError: sinon.stub()
             };
         });
 
@@ -131,9 +137,6 @@ describe("App", function () {
                 App.user().should.equal(this.session.user);
             });
 
-            it("should ask uncaught errors to listen", () => {
-                this.uncaughtErrors.listen.should.have.been.calledWith(sinon.match.func);
-            });
 
             it("should message the app delegate that app has been bootstrapped", () => {
                 this.delegateHandlers.onBootstrapped.should.have.been.called;
@@ -148,6 +151,20 @@ describe("App", function () {
                 App.events.should.respondTo("off");
                 App.events.should.respondTo("once");
                 App.events.should.respondTo("publish");
+            });
+
+            it("should ask uncaught errors to listen", () => {
+                this.uncaughtErrors.listen.should.have.been.calledWith(sinon.match.func);
+            });
+
+            describe("when an uncaught error occurs", () => {
+                beforeEach(() => {
+                    this.error = new Error("App is b0rked");
+                    this.triggerError(this.error);
+                });
+                it("should delegate to the uncaught errors handler", () => {
+                    this.delegateHandlers.handleUncaughtError.should.have.been.calledWith(this.error);
+                });
             });
 
             // Use instance method rather than  static to get promise returned.
