@@ -37,7 +37,7 @@ import OrderError from "./lib/AuthError";
 
 export default class OrderComponent {
     get metadata() { return { name: "@yuzu/auth" }; }
-    bootstrap(spec) {
+    register(spec) {
         spec.action(PlaceOrder)
             .creator("clientSession", ClientSession)
             .creator("orderRepo", OrderRepo)
@@ -48,14 +48,14 @@ export default class OrderComponent {
 export { OrderError };
 ```
 The above contains exports for any modules that can be used by other components.
-In addition, a default export class is used when for bootstrapping the component.
+In addition, a default export class is used for bootstrapping the component.
 
 The default export should be a class that implements the following interface:
 
 ```typescript
 interface YepAppComponent {
     metadata: { name }; // Info about the component (Minimum is name attribute);
-    bootstrap(): ?Promise<void>; // Optionally return a promise if async is needed.
+    register(): ?Promise<void>; // Optionally return a promise if async is needed.
 
     // Optional
     onBeforeAppBootstrapped(bootstrapper: Bootstrapper);

@@ -111,8 +111,8 @@ describe("App", function () {
                 this.delegateHandlers.onBeforeBootstrapped.should.have.been.called;
             });
 
-            it("should bootstrap the components", () => {
-                this.componentList.every((component) => component.bootstrap.calledWithMatch(
+            it("should register the components", () => {
+                this.componentList.every((component) => component.register.calledWithMatch(
                     (specs) => typeof specs.wire === "function" // Checking for a spec like object.
                 )).should.be.true;
             });

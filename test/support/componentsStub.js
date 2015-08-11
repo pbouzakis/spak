@@ -9,15 +9,15 @@ export default function componentsStub(cb) {
     return [
         {
             metadata: { name: "component-1" },
-            bootstrap: sinon.stub()
+            register: sinon.stub()
         },
         {
             metadata: { name: "component-2" },
-            bootstrap: sinon.spy((spec) => spec.action(DoSomethingAction))
+            register: sinon.spy((spec) => spec.action(DoSomethingAction))
         },
         {
             metadata: { name: "component-2" },
-            bootstrap: sinon.spy((spec) => spec.action("doOtherThing", DoSomethingAction))
+            register: sinon.spy((spec) => spec.action("doOtherThing", DoSomethingAction))
         }
     ];
 }
