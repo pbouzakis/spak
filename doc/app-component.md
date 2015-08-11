@@ -59,6 +59,7 @@ interface YepAppComponent {
 
     // Optional
     onBeforeAppBootstrapped(bootstrapper: Bootstrapper);
+    onAppComponentsRegistered(bootstrapper: Bootstrapper);
     onAppBootstrapped(bootstrapper: Bootstrapper);
     onAppReady();
     priority: number; // Components are bootstrapped by priority then placement in the `App.Components` constructor.

@@ -117,6 +117,30 @@ describe("App", function () {
                 )).should.be.true;
             });
 
+            it("should call all components implementing the `onBeforeAppBootstrapped` hook", () => {
+                this.componentList
+                    .filter((component) => typeof component.onBeforeAppBootstrapped === "function")
+                    .every((component) => component.onBeforeAppBootstrapped.calledWithMatch(
+                        (bootstrapper) => typeof bootstrapper.bootstrap === "function"
+                    )).should.be.true;
+            });
+
+            it("should call all components implementing the `onAppComponentsRegistered` hook", () => {
+                this.componentList
+                    .filter((component) => typeof component.onAppComponentsRegistered === "function")
+                    .every((component) => component.onAppComponentsRegistered.calledWithMatch(
+                        (bootstrapper) => typeof bootstrapper.bootstrap === "function"
+                    )).should.be.true;
+            });
+
+            it("should call all components implementing the `onAppBootstrapped` hook", () => {
+                this.componentList
+                    .filter((component) => typeof component.onAppBootstrapped === "function")
+                    .every((component) => component.onAppBootstrapped.calledWithMatch(
+                        (bootstrapper) => typeof bootstrapper.bootstrap === "function"
+                    )).should.be.true;
+            });
+
             it("should message the app delegate to provide session", () => {
                 this.delegateHandlers.provideSession.should.have.been.called;
             });

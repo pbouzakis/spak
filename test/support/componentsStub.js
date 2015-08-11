@@ -9,15 +9,21 @@ export default function componentsStub(cb) {
     return [
         {
             metadata: { name: "component-1" },
-            register: sinon.stub()
+            register: sinon.stub(),
+            onAppBootstrapped: sinon.stub(),
+            onBeforeAppBootstrapped: sinon.stub()
         },
         {
             metadata: { name: "component-2" },
-            register: sinon.spy((spec) => spec.action(DoSomethingAction))
+            register: sinon.spy((spec) => spec.action(DoSomethingAction)),
+            onAppBootstrapped: sinon.stub(),
+            onAppComponentsRegistered: sinon.stub()
         },
         {
             metadata: { name: "component-2" },
-            register: sinon.spy((spec) => spec.action("doOtherThing", DoSomethingAction))
+            register: sinon.spy((spec) => spec.action("doOtherThing", DoSomethingAction)),
+            onAppComponentsRegistered: sinon.stub(),
+            onBeforeAppBootstrapped: sinon.stub()
         }
     ];
 }
