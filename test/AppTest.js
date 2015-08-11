@@ -14,11 +14,13 @@ describe("App", function () {
             App.should.itself.respondTo("logger");
             App.should.itself.respondTo("localize");
             App.should.itself.ownProperty("events");
+            App.should.itself.ownProperty("config");
         });
 
         it("should provide inner classes", () => {
             App.should.itself.respondTo("Components");
             App.should.itself.respondTo("Delegate");
+            App.should.itself.respondTo("Config");
         });
     });
 
@@ -64,7 +66,11 @@ describe("App", function () {
                         this.delegateHandlers.handleRunError = sinon.spy(() => done());
                         this.error = new Error("Oops");
                         this.delegateHandlers[hook] = () => { throw this.error; };
-                        App.run(new App.Components(...this.componentList), new App.Delegate(this.delegateHandlers));
+                        App.run(
+                            new App.Components(...this.componentList),
+                            new App.Config(),
+                            new App.Delegate(this.delegateHandlers)
+                        );
                     });
 
                     it("should call the onRunError handler", () => {
@@ -78,7 +84,13 @@ describe("App", function () {
             beforeEach((done) => {
                 this.delegateHandlers.onReady = sinon.spy(done);
                 this.delegateHandlers.handleRunError = sinon.spy(done);
-                App.run(new App.Components(...this.componentList), new App.Delegate(this.delegateHandlers));
+                this.cfg1 = { foo: "foo"};
+                this.cfg2 = { env: "dev" };
+                App.run(
+                    new App.Components(...this.componentList),
+                    new App.Config(this.cfg1, this.cfg2),
+                    new App.Delegate(this.delegateHandlers)
+                );
             });
 
             it("should return the app when asked for the instance.", () => {
@@ -88,7 +100,7 @@ describe("App", function () {
             describe("when attempting to run the application again", () => {
                 beforeEach((done) => {
                     this.delegateHandlers = { handleRunError: sinon.spy(() => done()), onReady: done };
-                    App.run(new App.Components(), new App.Delegate(this.delegateHandlers));
+                    App.run(new App.Components(), new App.Config(), new App.Delegate(this.delegateHandlers));
                 });
                 it("should call `onRunError`", () => {
                     this.delegateHandlers.handleRunError.should.have.been.called;
@@ -125,6 +137,11 @@ describe("App", function () {
                 App.session().should.equal(this.session);
             });
 
+            it("should have a populated config", () => {
+                App.config.foo.should.equal("foo");
+                App.config.env.should.equal("dev");
+            });
+
             it("should support logging", () => {
                 App.logger("ns").should.equal(this.logger);
             });
@@ -136,7 +153,6 @@ describe("App", function () {
             it("should expose the user", () => {
                 App.user().should.equal(this.session.user);
             });
-
 
             it("should message the app delegate that app has been bootstrapped", () => {
                 this.delegateHandlers.onBootstrapped.should.have.been.called;
