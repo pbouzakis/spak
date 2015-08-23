@@ -137,7 +137,7 @@ describe("App", function () {
                 this.componentList
                     .filter((component) => typeof component.onAppBootstrapped === "function")
                     .every((component) => component.onAppBootstrapped.calledWithMatch(
-                        (bootstrapper) => typeof bootstrapper.bootstrap === "function"
+                        sinon.match.object // IocContainer
                     )).should.be.true;
             });
 
