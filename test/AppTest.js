@@ -51,6 +51,7 @@ describe("App", function () {
                 provideLocalize: sinon.stub().returns({ localize: () => this.localizedPath }),
                 provideUncaughtErrors: sinon.stub().returns(this.uncaughtErrors),
                 onBeforeBootstrapped: sinon.stub(),
+                onComponentsRegistered: sinon.stub(),
                 onBootstrapped: sinon.stub(),
                 handleUncaughtError: sinon.stub()
             };
@@ -131,6 +132,10 @@ describe("App", function () {
                     .every((component) => component.onAppComponentsRegistered.calledWithMatch(
                         (bootstrapper) => typeof bootstrapper.bootstrap === "function"
                     )).should.be.true;
+            });
+
+            it("should message the app delegate that app components have been registered.", () => {
+                this.delegateHandlers.onComponentsRegistered.should.have.been.called;
             });
 
             it("should call all components implementing the `onAppBootstrapped` hook", () => {
