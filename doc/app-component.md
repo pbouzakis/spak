@@ -1,15 +1,59 @@
-# YepApp Components
+# Components
 
-As mentions on the main [app doc](./app.md), components are used to break your application into
-smaller, more cohesive, less coupled, and more manageable chunks.
+Quick Links
 
-Component's can range from either a slice of the application (a slice meaning across the layers (ui, app, domain, data), a specific function (push-notifications), to even a single module that plugins into another.
+- [Component structure](#component-structure)
+- [Creating components](#creating-components)
+- [What goes inside the index module?](#example-index.js)
 
-There are two groups of components: local and external. Both should be bundled as npm packages. The only difference is that external components live in another github repo.
+`yep-app` promotes a component based architecture with the `App` object requiring a list of components to register with the application.
+For more on component based architecture [see this article](https://msdn.microsoft.com/en-us/library/ee658117.aspx#ComponentBasedStyle).
 
-Local components will have the npm namespace of `@app` (`@app/push-notifications` for example), whereas external components will use the `@yuzu` namespace (`@yuzu/auth`).
+The application is provided all components on startup of the app when calling `App.run`. This is done in the main module of your project (The first code run).
 
-## Standard npm package structure
+```javascript
+App.run(
+    App.Components(...) // Supply your components as arguments here.
+    App.Config(...),
+    App.Delegate({ ... })
+);
+
+// Another example
+
+import AuthComponent from "@app/auth";
+import SyncComponent from "@app/sync";
+
+App.run(
+    App.Components(new AuthComponent(), new SyncComponent())
+    App.Config(...),
+    App.Delegate({ ... })
+);
+
+```
+
+`yep-app` Components are made of js modules as well docs, tests, styles, etc that serve to encapsulate logical grouping of functionality about the system. In practice, that can translate into something as big as feature such as search (including UI, actions, models, db, etc) to a single module.
+
+## Components === `npm` packages.
+
+This allows shared components to be published (`npm` registry) and easily installed into an application via `npm install`. Although all components are expected to be reusable, they may only belong to one application. Therefore it is okay for components to be bundled locally into the application. We recommend [scoping these components](https://docs.npmjs.com/misc/scope) with `@app`.  We also recommend `npm` scopes for components you wish to publish but are private.
+
+```
+node_modules/
+    @app/               // Any packages under @app are local.
+        search/
+            lib/
+                Search.js
+        dialogs/
+            lib/
+    @mycompany/         // published as private `npm` packages.
+         orders/
+             lib/
+                 Order.js
+                 ShoppingCart.js
+```
+
+
+## Component structure
 
 ### Top level folders
 - doc (markdown files)
@@ -21,18 +65,20 @@ Local components will have the npm namespace of `@app` (`@app/push-notifications
 - package.json (with npm scripts for running githooks, lint, and tests)
 - pre-commit and pre-push githook scripts
 - README.md
-- jshint and gitignore configs
-- index.js
+- lint and gitignore configs
+- index.js main module
 
-### main module (entry point)
-An npm packge can specify a main module, however the standard is to use the index.js module for this. Components use the index module to expose internal modules as well as an component class that can be used to bootstrap the component.
+### the main module (entry point)
+An `npm` packge can specify a main module, however the standard is to have an `index.js` in the root of the package. Components use the index module to declare what internal modules can be used by other other components as well as a `default export` of a `YepAppComponent` class that can register with the system the component and specify what services it implements.
 
 ## Example index.js
+The following is a sample `index.js` module that would live in the root of the component.
 
 ```javascript
 import PlaceOrder from "./lib/actions/PlaceOrder";
 import OrderRepo from "./lib/repo/OrderRepoInStorage";
 import StoreGateway from "./lib/gateways/StoreGateway";
+import OrderItem from "./lib/OrderItem";
 import OrderError from "./lib/AuthError";
 
 export default class OrderComponent {
@@ -45,12 +91,13 @@ export default class OrderComponent {
     }
 }
 
-export { OrderError };
+export { OrderItem, OrderError };
 ```
-The above contains exports for any modules that can be used by other components.
-In addition, a default export class is used for bootstrapping the component.
+The above contains 2 exports for any modules to directly import (`OrderItem` and `OrderError`).
 
-The default export should be a class that implements the following interface:
+In addition, a `default export` class is **required** in order to register your component with the application. This the class that is imported by the application to include your component (via `App.run`).
+
+The `default export` should be a class that implements the following interface:
 
 ```typescript
 interface YepAppComponent {
@@ -61,10 +108,9 @@ interface YepAppComponent {
     onBeforeAppBootstrapped(bootstrapper: Bootstrapper);
     onAppComponentsRegistered(bootstrapper: Bootstrapper);
     onAppBootstrapped(bootstrapper: Bootstrapper);
-    onAppReady();
     priority: number; // Components are bootstrapped by priority then placement in the `App.Components` constructor.
 }
 ```
+*NOTE: ATM `priority` is not being respected by `App.run`.*
 
-```
 
