@@ -5,7 +5,7 @@
 - [App API](#app-interface)
 - [App providers](./app-providers.md)
 - [Philosophy of `yep-app`](./philosphy.md)
-- [Application components](./app-components.md)
+- [Application components](./app-component.md)
 - [Application action and events](./app-actions-and-events.md)
 - [Application configuration](./app-config.md)
 - [Custom functionality via AppDelegate](./app-delegate.md)
