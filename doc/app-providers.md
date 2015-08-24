@@ -25,7 +25,7 @@ The static methods should not be invoked until after bootstrapping, which means 
 The current logged in session can be referenced by the static `session` method.
 
 ```javascript
-var currentSession = app.session();
+var currentSession = App.session();
 console.log(currentSession.user.email);
 ```
 There is no set interface for the session object returned other than
@@ -36,10 +36,10 @@ Projects can provide more session info (an auth token, browser info, etc).
 See https://github.com/YuzuJS/yep-auth as an example of a yep component that implements the session object: `ClientSession`;
 
 A sugar method for pulling the user out of the session exists.
-Since most consumers will just want the user, `app.session().user` may get old after awhile.
+Since most consumers will just want the user, `App.session().user` may get old after awhile.
 
 ```javascript
-var user = app.user();
+var user = App.user();
 console.log(user.email); // That is nicer.
 
 ```
@@ -58,17 +58,17 @@ interface YepAppUser {
 All objects in the system should have the ability to log without going thru hoops.
 
 ```javascript
-import { app } from "@yuzu/yep-app";
+import { App } from "@yuzu/yep-app";
 
 class CriticalThing {
-    constructor() {
-        this._logger = app.logger("NAMESPACE");
-    }
-
     somethingInteresting() {
         if (hasSomethingInterestingHappened) {
             this._logger.log("things that make you go hmm.");
         }
+    }
+    
+    get _logger() { // Best to use a getter, since logger might not be available in the constructor.
+        return App.logger("orders");
     }
 }
 ```
@@ -92,11 +92,11 @@ Instead of hardcoding copy in the UI, objects should utilize the localize method
 from the app.
 
 ```javascript
-import { app } from "@yuzu/yep-app";
+import { App } from "@yuzu/yep-app";
 
 class UserProfileUI {
     get title() {
-        return app.localize("key"); // Up to provided localization component to return a localized string.
+        return App.localize("key"); // Up to provided localization component to return a localized string.
     }
 }
 ```
