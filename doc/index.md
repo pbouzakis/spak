@@ -28,7 +28,7 @@ var user = App.user();
 
 ```typescript
 interface App {
-    static run(AppComponents, AppComing, AppDelegate);
+    static run(AppComponents, AppConfig, AppDelegate);
     static terminate();
     static session(): ClientSession;
     static user(): User;
