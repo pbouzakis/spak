@@ -13,13 +13,13 @@ We come up with the following:
 
 ![enter image description here](./images/order-model.png)
 
-The blue objects live on the boundary of our system (the presenter neat the UI, and the repo near the data). The green objects are our models. So *the green objects plus the action object* are what we mean by "core logic". The don't care much about the blue objects, in fact the core objects define the interfaces they would like the boundary (blue) objects to implement. This keeps the core of your component unnecessarily coupled to details.
+The blue objects live on the boundary of our system (the presenter near the UI, and the repo near the data). The green objects are our models. So *the green objects plus the action object* are what we mean by "core logic". They don't care much about the blue objects, in fact the core objects define the interfaces they would like the boundary (blue) objects to implement. This keeps the core of your component unnecessarily coupled to details.
 
 ## Decomposing your feature
 
 The action coordinates between these objects to fulfill the task of *adding an item to an order*.
 
-These objects will probably be package as a component: probably `OrderComponent`. We can break this component into layers:
+These objects will probably be packaged as a component: probably `OrderComponent`. We can break this component into layers:
 ```
 node_modules/@app/order
     lib/
@@ -51,7 +51,7 @@ interface OrderPresenter {
 }
 ```
 
-At this point we can know begin at implementing these objects.
+At this point we know how to begin implementing these objects.
 We can decide to decouple them from our component if we feel they are volatile and likely to change, or we can put them in our component for now, and defer that decision to when our component is more stable.
 
 Our component then looks like this.
@@ -77,7 +77,7 @@ node_modules/@app/order
     index.js  <- entry point of our component.
 ```
 
-If your boundary objects have enough logic, then it might be a good idea to write tests for them. In the above we have two objects. The form object will implement the `Presenter` and must contain both `showError` and `showItemAddedMessage`. It can use whatever UI framework it likes to achieve this (react, angular, knockout, etc).
+If your boundary objects have enough logic, then it might be a good idea to write tests for them. In the example above, we have two objects. The form object will implement the `Presenter` and must contain both `showError` and `showItemAddedMessage`. It can use whatever UI framework it likes to achieve this (react, angular, knockout, etc).
 The repo is implemented using HTML local storage, however it does this, it *MUST* have a `fetchOrderById` method and `createItem` method.
 
 ## Useful Resources
