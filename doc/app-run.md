@@ -74,5 +74,5 @@ The above showcases what App.run is used for, to start the application and ensur
 
 ## Sequence diagram
 
-![enter image description here](./images/app-run-lifecycle9.png)
-[Open diagram](./images/app-run-lifecycle9.png)
+![enter image description here](./images/yep-app-run-lifecycle9.png)
+[Open diagram](./images/yep-app-run-lifecycle9.png)
