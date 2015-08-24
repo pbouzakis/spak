@@ -7,9 +7,9 @@ Quick Links
 - [What goes inside the index module?](#example-index.js)
 
 `yep-app` promotes a component based architecture with the `App` object requiring a list of components to register with the application.
-For more on component based architecture [see this article](https://msdn.microsoft.com/en-us/library/ee658117.aspx#ComponentBasedStyle).
+For more on component based architecture, [see this article](https://msdn.microsoft.com/en-us/library/ee658117.aspx#ComponentBasedStyle).
 
-The application is provided all components on startup of the app when calling `App.run`. This is done in the main module of your project (The first code run).
+The application is provided to all components on startup of the app when calling `App.run`. This is done in the main module of your project (The first code run).
 
 ```javascript
 App.run(
@@ -31,7 +31,7 @@ App.run(
 
 ```
 
-`yep-app` Components are made of js modules as well docs, tests, styles, etc that serve to encapsulate logical grouping of functionality about the system. In practice, that can translate into something as big as feature such as search (including UI, actions, models, db, etc) to a single module.
+`yep-app` Components are made of js modules as well as docs, tests, styles, etc. that serve to encapsulate logical grouping of functionality about the system. In practice, that can translate into something as big a feature such as search (including UI, actions, models, db, etc) to a single module.
 
 ## Components === `npm` packages.
 
@@ -69,7 +69,7 @@ node_modules/
 - index.js main module
 
 ### the main module (entry point)
-An `npm` packge can specify a main module, however the standard is to have an `index.js` in the root of the package. Components use the index module to declare what internal modules can be used by other other components as well as a `default export` of a `YepAppComponent` class that can register with the system the component and specify what services it implements.
+An `npm` package can specify a main module, however, the standard is to have an `index.js` in the root of the package. Components use the index module to declare what internal modules can be used by other other components, as well as a `default export` of a `YepAppComponent` class that can register the component with the system and specify what services it implements.
 
 ## Example index.js
 The following is a sample `index.js` module that would live in the root of the component.
