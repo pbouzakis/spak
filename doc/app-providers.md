@@ -33,7 +33,7 @@ there being a user getter.
 
 Projects can provide more session info (an auth token, browser info, etc).
 
-See https://github.com/YuzuJS/yep-auth as an example of a yep component that implements the session object: `ClientSession`;
+See https://github.com/YuzuJS/auth as an example of a yep component that implements the session object: `ClientSession`;
 
 A sugar method for pulling the user out of the session exists.
 Since most consumers will just want the user, `App.session().user` may get old after awhile.
