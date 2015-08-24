@@ -4,7 +4,7 @@ A simple object that provides configuration settings to the rest of the applicat
 
 ```
 You can pass as many options as you want. They are all `merged` (using underscore's extend).
-var cfg = new App.Config(opt1, opt2, op3);
+var cfg = new App.Config(opt1, opt2, opt3);
 ```
 *Be careful with nested options, options are deeply copied when merged*
 
