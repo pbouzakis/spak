@@ -4,7 +4,7 @@ Starting, bootstrapping, and running the application is fairly simple.
 
 You must provide the following objects.
 
-- [List of Components via `App.Components`.](./app-components.md)
+- [List of Components via `App.Components`.](./app-component.md)
 - [An application config via `App.Config`.'](./app-config.md)
 - [An application delegate via `App.Delegate`.](./app-delegate.md)
 
