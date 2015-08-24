@@ -10,13 +10,13 @@ Modules in the system can rely on the fact that the following resources will alw
 - UncaughtError handling
 
 ## Default implementations
-The `yep-app` package comes bundled with default implementations. These objects are not suitable for `production` but can aid in debugging an unit tests.
+The `yep-app` package comes bundled with default implementations. These objects are not suitable for `production` but can aid in debugging and unit tests.
 
-The `ProvidedAppDelegate` module is a `AppDelegate`object with these defaults all set and ready for the application. When setting up an unit test, prototype, debugging environment, it might be a good idea to use this delegate. [Check the `AppDelegate` docs for more.](./app-delegate.md).
+The `ProvidedAppDelegate` module is a `AppDelegate`object with these defaults all set and ready for the application. When setting up a unit test, prototype or debugging environment, it might be a good idea to use this delegate. [Check the `AppDelegate` docs for more.](./app-delegate.md).
 
 ## Accessing providers via `static` methods.
 
-The static methods should not be invoked until after bootstrapping, which means you should not attempt to access the resources at the top of your module but inside your export classes and functions.
+The static methods should not be invoked until after bootstrapping, which means you should not attempt to access the resources at the top of your module but rather inside your export classes and functions.
 
 ## Providers
 
@@ -44,7 +44,7 @@ console.log(user.email); // That is nicer.
 
 ```
 
-The `yep-app` expects a `user` to look like the following (minimum interface)
+The `yep-app` expects a `user` to look like the following (minimum interface):
 
 ```typescript
 interface YepAppUser {
@@ -104,4 +104,4 @@ class UserProfileUI {
 The default implementation from YepApp will simply return the key back.
 
 ### Uncaught errors
-The uncaught error handling is not somethign modules will call directly, however the system via the `AppDelegate`, will ensure there is some module in charge of listening for uncaught errors. In addition, the `AppDelegate` will be responsible for handling these errors. [Check the `AppDelegate` docs for more on error handling.](./app-delegate.md).
+The uncaught error handling is not something modules will call directly, however, the system, via the `AppDelegate`, will ensure there is some module in charge of listening for uncaught errors. In addition, the `AppDelegate` will be responsible for handling these errors. [Check the `AppDelegate` docs for more on error handling.](./app-delegate.md).
