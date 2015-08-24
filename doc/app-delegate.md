@@ -42,6 +42,8 @@ The `provide` methods must return objects that implement [app provider interface
 
 The `on` hooks are optional and allow you to kick into the [`App.run` lifecycle.](./app-run-lifecycle.md) The `bootstrapper` object will allow you to add more specs to the dependency injection system. The `onBootstrapped` hook will give you the full `IocContainer`, which gives you access to all objects created by the DI system.
 
+### Errors
+
 The `handleRunError` is used if there is a fatal error during app bootstrap. This method should tear down your splash page and provide an error to the user.
 
 The `handleUncaughtError` is for any other error that occurs after `onReady` that is not handled. Up to the delegate for how best to handle.
