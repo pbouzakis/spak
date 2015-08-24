@@ -5,7 +5,7 @@
 ## What do you mean by "core logic"?
 A feature, module, functionality should be written without concerns of the details. This might not always be possible but it is a preferable way to start development, as it most likely that those details will change.
 
-We recommend an approach where you first identity your use cases from requirements. Let's say our system needs to add an item to shopping. Our first use case might be to *add an item to the shopping*.
+We recommend an approach where you first identify your use cases from requirements. Let's say our system needs to add an item to shopping. Our first use case might be to *add an item to the order*.
 
 We will represent the use case with an [Action](./app-actions-and-events.md), which is simply a command object. We will call this `AddItemToOrder`. While exploring this use case we find we need the following objects: `Order` and `Item`. We also will need to fetch and save this data to some storage object, and probably notify the user the item was successfully saved.
 
@@ -13,7 +13,7 @@ We come up with the following:
 
 ![enter image description here](./images/order-model.png)
 
-The blue objects live on the boundary of our system (the presenter neat the UI, and the repo near the data). The green objects are our models. So *the green objects plus the action object* are what we mean by "core logic". The don't care much about the blue objects, in fact the core objects define the interfaces they would like the boundary (blue) objects to implement. This keeps the core of your component unnecessarily coupled to details.
+The blue objects live on the boundary of our system (the presenter near the UI, and the repo near the data). The green objects are our models. So *the green objects plus the action object* are what we mean by "core logic". They don't care much about the blue objects, in fact the core objects define the interfaces they would like the boundary (blue) objects to implement. This keeps the core of your component unnecessarily coupled to details.
 
 ## Decomposing your feature
 
