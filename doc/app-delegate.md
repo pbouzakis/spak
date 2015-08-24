@@ -1,4 +1,4 @@
-## App Delegate
+# App Delegate
 
 This class allows projects to customize and hook into key application events as well as provide implementation of required resources expected by the `App`.
 

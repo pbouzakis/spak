@@ -1,4 +1,4 @@
-## App Actions
+# App Actions
 
 Action is a command that represents a single use case of a user story or feature.
 Typically, a feature and functionality will be written across a family of objects and it is the action that brings these objects together, acting as a coordinator.

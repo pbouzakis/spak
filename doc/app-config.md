@@ -1,4 +1,4 @@
-## AppConfig
+# AppConfig
 
 A simple object that provides configuration settings to the rest of the application.
 
