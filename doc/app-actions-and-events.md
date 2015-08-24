@@ -1,7 +1,7 @@
 ## App Actions
 
-Action is a command that represent a single use case of a user story or feature.
-Typically a feature and functionality will be written across a family of objects, it is the action that brings these objects together acting as a coordinator.
+Action is a command that represents a single use case of a user story or feature.
+Typically, a feature and functionality will be written across a family of objects and it is the action that brings these objects together, acting as a coordinator.
 
 An action must have an `exec` method that accepts an object of options.
 In addition, a `componentName` must be specified so that when an action is specified with the bootstrapper, it has a name that other modules can refer to when dispatching.
@@ -33,9 +33,9 @@ App.dispatchAction("addItem", { item: new Item() });
 
 ```
 
-### Action base class.
+### Action base class
 
-A base class is available for actions. This base class includes a logger, and easy access to the event bus.
+A base class is available for actions. This base class includes a logger and easy access to the event bus.
 
 ```javascript
 import { Action } from "@yuzu/yep-app";
@@ -61,8 +61,8 @@ class AddItem extends Action {
 ## App Events
 
 An event command bus is exposed on the `App` object.
-This is a simply pubsub object that can be used by modules and object to notify other interested parties of state change or other key events that have just occurred.
-An event should represent that something just happened NOT about to. We recommend using `beforeFooOccurred` if you need to notify right before something occurs.
+This is a simple pubsub object that can be used by modules and objects to notify other interested parties of a state change or other key events that may have just occurred.
+An event should represent something that just happened, NOT something about to happen. We recommend using `beforeFooOccurred` if you need to notify right before something occurs.
 
 The command bus is implement by [`pubit-as-promised`](http://github.com/YuzuJS/pubit-as-promised).
 
