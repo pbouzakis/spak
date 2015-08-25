@@ -61,6 +61,17 @@ node_modules/
 - test
 - node_modules
 
+### Suggested folders inside lib
+
+```
+    lib/
+        actions/
+        ui/
+        gateways/
+        repos/
+        models/
+```
+
 ### Top level files
 - package.json (with npm scripts for running githooks, lint, and tests)
 - pre-commit and pre-push githook scripts

@@ -10,16 +10,23 @@ Behind the scenes, `yep-app` implements DI via [wire js package by cujo](https:/
 The DI system is in control of creating key objects of your system. Your modules/object declare what they need, which in turn, those modules declare what the need. This allows your module to get what it needs without worrying about *how* to go about creating it.
 
 ## Declare what you need in your default export.
-The below class `Foo` is declaring that it needs fooService.
-Below the static `inject` property is used to declare what needs to be injected.
+The class `AwesomeService` is declaring that it needs `fooService`.
+Below an `inject` property is saved on the export to declare what needs to be injected.
 
 ```javascript
-export default AwesomeService {
+export default class AwesomeService {
     static get inject() { return ["fooService"] }
     constructor(fooService) {
         this._service = fooService;
     }
 }
+
+// Or w/ old school function constructor
+function AwesomeService(fooService) {
+    this._service = fooService;
+}
+AwesomeService.inject = ["fooService"];
+export default AwesomeService;
 
 // However we can use a decorator to make this a bit cleaner.
 @inject("fooService")
@@ -29,7 +36,7 @@ export default AwesomeService {
     }
 }
 ```
-However, if you are using the awesome [decoratify plugin](https://github.com/yuzujs/decoratify) you won't even have to add the decorator. This will be done automagically by the browserify transform framework.
+However, if you are using the awesome [decoratify plugin](https://github.com/yuzujs/decoratify) you won't have to add the decorator mainly. If you have a default export [decoratify](https://github.com/yuzujs/decoratify) will add this for you during the browserify build.
 
 ## DI Specifications
 Okay we now know we need to declare our dependencies, but how we declare what we provide?
