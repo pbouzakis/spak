@@ -11,6 +11,7 @@
 - [Custom functionality via AppDelegate](./app-delegate.md)
 - [How to init and run an w/ App](./app-run.md)
 - [Dependency Inject system](./di.md)
+- [Bundled decorators](./decorators.md)
 
 ## `App`
 
