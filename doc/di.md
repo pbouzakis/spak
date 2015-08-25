@@ -87,5 +87,4 @@ spec.literal("favoriteColor", "blue")
 
 ### specs#action(Action) and specs#(name: string, Action)
 Declare an application [action](./app-actions-and-events.md).
-If you're action self's describe's it's component name you dont need to pass in the name.
-
+If your action's self describes its component name you don't need to pass in the name.
