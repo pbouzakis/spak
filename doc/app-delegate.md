@@ -40,7 +40,7 @@ interface App.Delegate {
 
 The `provide` methods must return objects that implement [app provider interfaces.](./app-providers.md)
 
-The `on` hooks are optional and allow you to kick into the [`App.run` lifecycle.](./app-run-lifecycle.md) The `bootstrapper` object will allow you to add more specs to the dependency injection system. The `onBootstrapped` hook will give you the full `IocContainer`, which gives you access to all objects created by the DI system.
+The `on` hooks are optional and allow you to kick into the [`App.run` lifecycle.](./app-run.md) The `bootstrapper` object will allow you to add more specs to the dependency injection system. The `onBootstrapped` hook will give you the full `IocContainer`, which gives you access to all objects created by the DI system.
 
 ### Errors
 
