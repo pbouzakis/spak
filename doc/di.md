@@ -38,10 +38,10 @@ export default AwesomeService {
 ```
 However, if you are using the awesome [decoratify plugin](https://github.com/yuzujs/decoratify) you won't have to add the decorator mainly. If you have a default export [decoratify](https://github.com/yuzujs/decoratify) will add this for you during the browserify build.
 
-## DI Specifications
-Okay we now know we need to declare our dependencies, but how we declare what we provide?
+## IOC Specifications
+When the system is run, during bootstrap, the DI system will gather specifications aka `specs` provided by the components to build an `IocContainer`. This object is simply a bag of all the instantiated objects as *specified* by the components.
 
-The specifications objects of course! The `specs` object is exposed via the `AppBootstrapper#spec` property.
+A `specs` object is exposed on the `AppBootstrapper#spec`.
 Take a look at the [App.run lifecycle docs](./app-run.md#sequence-diagram). Anywhere you see the `bootstrapper` being passed, you can register with the specs.
 
 ```javascript
@@ -66,17 +66,36 @@ bootstrapper.spec
 
 You can see from our earlier module, we declare our `awesomeService` as well as the `fooService` it depends on. The system can now provide `awesomeService` with what it needs. If `fooService` depends on other modules, they need to be defined here or in some other module's register method.
 
-## specs API
-The spec methods are all chainable.
+## IOC `specs` API
+*The spec methods are all chainable.*
 
-### specs#creator(name: string, Class)
+Notice below that we are using the term `interface` for the key used in the `IocContainer`.
+This is because to the objects in the system they are injected with **INTERFACES`** and not concrete implementations. Another way to think of it is objects playing *roles*. A module will ask (depend on) an object to be passed in to play a specific role (have the required methods and properties).
+
+Interface names should not reveal *how* an object will play the role unless a module in the system *depends* on the implementation.
+
+### specs#creator(interface: string|array<string>, Class)
 The spec is expecting a JS class (function constructor).
-The DI system will new the class up and save a reference in the `IocContainer` with `name`.
+The DI system will new the class up and save a reference in the `IocContainer` with key equaling the `interface`.
 
-### specs#factory(name: string, factoryFn)
+```javascript
+// Specify the class `Orders` to play role of `orders in the system.
+// Any object will be able to ask for an object playing the role of `orders` and get the correct interface.
+spec.creator("orders", Orders);
+
+// Specify the class `Order` to play the role of `orders` and `placementDelivery`.
+spec.creator(["orders", "placementDelivery"], Orders);
+```
+
+### specs#factory(interface: string|array<string>, factoryFn)
 Same as `creator` only the spec is provided with a function instead of a class. The function should be a factory and a value.
 
-### specs#literal(name, value: any)
+```
+// The DI system will simply call `createOrders`, saving the returned value in the `IocContainer`.
+spec.factory("orders", createOrders);
+```
+
+### specs#literal(interface: string|array<string>, value: any)
 Literal is used when you already have a created service/object/value ready to go. You just want this resource available for others.
 
 ```javascript
@@ -85,6 +104,22 @@ spec.literal("favoriteColor", "blue")
     .literal("logger", (...args) => console.log(...args));
 ```
 
-### specs#action(Action) and specs#(name: string, Action)
+### specs#alias(interfaceToAlias: string, aliasFor: string)
+This allows you to add more roles to an object already registered in the spec.
+The `aliasFor` param is interface of an object you want to add a new role for.
+
+Most of the time the above methods will support this functionality as you can pass an array of interfaces.
+For times when you are breaking the spec up, use `alias`.
+
+```
+spec.creator("orders", Orders)
+
+// Later in the spec, probably in another component.
+
+// This is saying whatever object implementing order is also going to implement `placementDelivery`.
+spec.alias("placementDelivery", "orders");
+```
+
+### specs#action(Action) and specs#(interface: string, Action)
 Declare an application [action](./app-actions-and-events.md).
 If your action's self describes its component name you don't need to pass in the name.
