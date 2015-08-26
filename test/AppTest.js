@@ -1,5 +1,8 @@
 /*jshint expr: true */
 import App from "../lib/App";
+import defaultAppArgs from "../lib/defaultAppArgs";
+import { defaultsWith } from "../lib/defaultAppArgs";
+
 import componentsStub from "./support/componentsStub";
 
 describe("App", function () {
@@ -249,5 +252,36 @@ describe("App", function () {
                 });
             });
         });
+    });
+
+    describe("when running the application with defaults", () => {
+        describe("with no delegate hooks", () => {
+            beforeEach(() => {
+                return App.runAsync(...defaultAppArgs);
+            });
+
+            it("should succesfully run", () => {
+                // Show that providers are there.
+                App.config.should.eql({});
+                App.logger("test").should.respondTo("info");
+                App.localize("test/testMe").should.equal("Test Me");
+            });
+
+        });
+
+        describe("with delegate hooks", () => {
+            beforeEach((done) => {
+                App.run(...defaultsWith({ onReady: done }));
+            });
+
+            it("should succesfully run", () => {
+                // Show that providers are there.
+                App.config.should.eql({});
+                App.logger("test").should.respondTo("info");
+                App.localize("test/testMe").should.equal("Test Me");
+            });
+        });
+
+        afterEach(() => App.terminate());
     });
 });
