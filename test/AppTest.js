@@ -63,11 +63,10 @@ describe("App", function () {
             ["startup", "onBootstrapped"].forEach((hook) => {
                 describe(`${hook}`, () => {
                     beforeEach((done) => {
-                        this.delegateHandlers.onReady = sinon.spy(done);
                         this.delegateHandlers.handleRunError = sinon.spy(() => done());
                         this.error = new Error("Oops");
                         this.delegateHandlers[hook] = () => { throw this.error; };
-                        App.run(
+                        return App.runAsync(
                             new App.Components(...this.componentList),
                             new App.Config(),
                             new App.Delegate(this.delegateHandlers)

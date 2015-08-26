@@ -72,6 +72,12 @@ App.run(
 
 The above showcases what App.run is used for, to start the application and ensure all required interfaces have implementations. The App.Delegate in the above example shows how it can be used to hook into key parts of the app run lifecycle.
 
+### App.runAsync(components, config, delegate)
+
+Same as `App#run` only a promise is returned.
+This should not be needed for production code, but might be helpful in test code where you might want to run the app and **THEN** run your test environment.
+
+
 ## Sequence diagram
 
 The following diagram shows the flow between the objects in order to get the app up and running.
