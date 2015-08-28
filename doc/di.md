@@ -41,19 +41,23 @@ However, if you are using the awesome [decoratify plugin](https://github.com/yuz
 ## IOC Specifications
 When the system is run, during bootstrap, the DI system will gather specifications aka `specs` provided by the components to build an `IocContainer`. This object is simply a bag of all the instantiated objects as *specified* by the components.
 
-A `specs` object is exposed on the `AppBootstrapper#spec`.
+A `specs` object is exposed on the `AppBootstrapper#spec`. It is also the first argument passed to the `YepAppComponent#register` method.
+
 Take a look at the [App.run lifecycle docs](./app-run.md#sequence-diagram). Anywhere you see the `bootstrapper` being passed, you can register with the specs.
 
 ```javascript
 class MyComponent {
     get metadata() { return { name: "@app/my-component" }}
-    register(bootstrapper) {
+
+    onBeforeAppBootstrapped(bootstrapper) {
         console.log(bootstrapper.spec); // We have the specs object!
+    }
+
+    register(specs) {
+        console.log(specs); // We have the specs object!
     }
 }
 ```
-
-When the `App.run` method is called, it runs through all components, with each registering it's services with the `specs` object. Once done, they are saved in the `IocContainer` object. Which is an object with references to everything specified, fully instantiated.
 
 ### Example spec
 ```javascript
@@ -61,10 +65,27 @@ When the `App.run` method is called, it runs through all components, with each r
 bootstrapper.spec
     .creator("awesomeService", AwesomeService)
     .factory("fooService", makeFooService)
-    .literal("settings", { color: "blue", size: 100})
+    .literal("settings", { color: "blue", size: 100 })
 ```
 
 You can see from our earlier module, we declare our `awesomeService` as well as the `fooService` it depends on. The system can now provide `awesomeService` with what it needs. If `fooService` depends on other modules, they need to be defined here or in some other module's register method.
+
+### Retrieving objects of the `IocContainer` in Application hooks.
+
+When the `App.run` method is called, it runs through all components, with each component registering it's services with the `specs` object. Once done, they are saved in the `IocContainer` object. The IocContainer will contain keys matching the interface names registered with the spec.
+
+Some of the application hoooks ([see the App#run lifecycle for which hooks do])(./app-run.md#sequence-diagram))
+are passed a reference to the `IocContainer`.
+
+With the specs used above the following would be in the `IocContainer`
+
+```
+onAppBootstrapped(container) {
+    console.log(container.awesomeService); // This would be an object that is an instanceof `AwesomeService`.
+    console.log(container.fooService); // This would be an object returned from calling `makeFooService`
+    console.log(container.settings); // { color: "blue", size: 100 }
+}
+```
 
 ## IOC `specs` API
 *The spec methods are all chainable.*
