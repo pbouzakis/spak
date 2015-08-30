@@ -1,18 +1,18 @@
 # yep-app
-A micro frontend framework providing the following
+A micro application framework providing the following:
 
-- top level application object for common application resources including
+- Top level / root object that [provides common application resources](./doc/app-providers.md)
   - current client session
   - authenticated user
   - localization
   - logging
   - uncaught error handling
-- component based architecture
-- application configuration
-- action dispatcher
-- event command bus
-- dependency injection wiring
-- ES decorators
+- [component based architecture](./doc/app-component.md)
+- [application configuration](./doc/app-config.md)
+- [action dispatcher](./doc/app-actions-and-events.md#actions)
+- [event command bus](./doc/app-actions-and-events.md#events)
+- [dependency injection wiring](./doc/di.md)
+- [ES decorators](./doc/decorators.md)
 
 ### Docs
 

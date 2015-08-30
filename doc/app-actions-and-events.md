@@ -1,4 +1,6 @@
-# App Actions
+# App Actions and Events
+
+## Actions
 
 Action is a command that represents a single use case of a user story or feature.
 Typically, a feature and functionality will be written across a family of objects and it is the action that brings these objects together, acting as a coordinator.
@@ -60,7 +62,7 @@ class AddItem extends Action {
 }
 ```
 
-## App Events
+## Events
 
 An event command bus is exposed on the `App` object.
 This is a simple pubsub object that can be used by modules and objects to notify other interested parties of a state change or other key events that may have just occurred.

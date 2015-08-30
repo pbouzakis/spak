@@ -83,5 +83,5 @@ This should not be needed for production code, but might be helpful in test code
 The following diagram shows the flow between the objects in order to get the app up and running.
 If anything throws an error, the `AppDelegate#handleRunError` will be called, so that app can tear down and alert the user that the app can't be started. See the [delegate docs for more](https://github.com/YuzuJS/yep-app/blob/8-24-15-docs-revamped/doc/app-delegate.md#errors)
 
-![enter image description here](./images/yep-app-run-lifecycle9.png)
+![enter image description here](./images/app-bootstrap-lifecycle.png)
 [Open diagram](./images/yep-app-run-lifecycle9.png)
