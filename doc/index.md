@@ -12,6 +12,7 @@
 - [How to init and run an w/ App](./app-run.md)
 - [Dependency Inject system](./di.md)
 - [Bundled decorators](./decorators.md)
+- [Testing your component](./testing.md)
 
 ## `App`
 
