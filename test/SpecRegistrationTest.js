@@ -3,6 +3,7 @@ import SpecRegistration from "../lib/di/SpecRegistration";
 import SpecFromClass from "../lib/di/SpecFromClass";
 import SpecFromFn from "../lib/di/SpecFromFn";
 import SpecFromValue from "../lib/di/SpecFromValue";
+import ActionSpec from "../lib/di/ActionSpec";
 
 // Begin sample modules
 class Foo {
@@ -22,7 +23,22 @@ function createBar(colors) {
 }
 createBar.inject = ["colors"];
 var colors = ["red", "green", "blue"];
-
+class AddOrder {
+    static get inject() {
+        return ["theRepo"];
+    }
+    get componentName() {
+        return "addOrder"
+    }
+}
+class RemoveOrder {
+    static get inject() {
+        return [];
+    }
+    get componentName() {
+        return "RemoveOrder"
+    }
+}
 // End sample modules
 
 describe("SpecRegistration", function () {
@@ -165,5 +181,39 @@ describe("SpecRegistration", function () {
             });
         });
 
+        describe("with an action spec", () => {
+            beforeEach(() => {
+                this.specs = new SpecRegistration(
+                    new ActionSpec("PlaceOrder", AddOrder),
+                    new ActionSpec(RemoveOrder)
+                );
+                this.config = {};
+                this.specs.writeTo(this.config);
+            });
+
+            it("should create a config with `placeOrder` spec'd from the class AddOrder", () => {
+                this.config.should.have.property("placeOrder");
+                this.config.placeOrder.should.eql({
+                    create: {
+                        module: AddOrder,
+                        args: [{ $ref: "theRepo"}],
+                        isConstructor: true
+                    },
+                    action: ["placeOrder"]
+                });
+            });
+
+            it("should create a config with `removeOrder` spec'd from the class RemoveOrder", () => {
+                this.config.should.have.property("removeOrder");
+                this.config.removeOrder.should.eql({
+                    create: {
+                        module: RemoveOrder,
+                        args: [],
+                        isConstructor: true
+                    },
+                    action: ["removeOrder"]
+                });
+            });
+        });
     });
 });
