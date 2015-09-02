@@ -10,6 +10,13 @@ class Foo {
         return ["bar", "colors"];
     }
 }
+class FooNoArgs {
+    static get inject() {
+        return [];
+    }
+}
+class FooNoInject {
+}
 function createBar(colors) {
     return { colors };
 }
@@ -124,5 +131,39 @@ describe("SpecRegistration", function () {
                 });
             });
         });
+
+        describe("with the classes with no args", () => {
+            beforeEach(() => {
+                this.specs = new SpecRegistration(
+                    new SpecFromClass("foo", FooNoArgs),
+                    new SpecFromClass("bar", FooNoInject)
+                );
+                this.config = {};
+                this.specs.writeTo(this.config);
+            });
+
+            it("should create a config with `foo` spec'd from class FooNoArgs", () => {
+                this.config.should.have.property("foo");
+                this.config.foo.should.eql({
+                    create: {
+                        module: FooNoArgs,
+                        args: [],
+                        isConstructor: true
+                    }
+                });
+            });
+
+            it("should create a config with `bar` spec'd from class FooNoInject", () => {
+                this.config.should.have.property("bar");
+                this.config.bar.should.eql({
+                    create: {
+                        module: FooNoInject,
+                        args: [],
+                        isConstructor: true
+                    }
+                });
+            });
+        });
+
     });
 });
