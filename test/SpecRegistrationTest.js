@@ -28,7 +28,7 @@ class AddOrder {
         return ["theRepo"];
     }
     get componentName() {
-        return "addOrder"
+        return "addOrder";
     }
 }
 class RemoveOrder {
@@ -36,7 +36,7 @@ class RemoveOrder {
         return [];
     }
     get componentName() {
-        return "RemoveOrder"
+        return "RemoveOrder";
     }
 }
 // End sample modules
