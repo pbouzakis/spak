@@ -25,6 +25,8 @@ describe("App", function () {
             App.should.itself.respondTo("Components");
             App.should.itself.respondTo("Delegate");
             App.should.itself.respondTo("Config");
+            App.should.itself.respondTo("Workflow");
+            App.should.itself.respondTo("WorkflowStep");
         });
     });
 
@@ -250,6 +252,20 @@ describe("App", function () {
                     it("should exec the action", () => {
                         this.didSomethingFromAction.should.have.been.calledWith(this.opts, this.color);
                     });
+                });
+            });
+
+            describe("when creating workflows", () => {
+                beforeEach(() => {
+                    this.wf = new App.Workflow("start");
+                    App.workflows.add(this.wf);
+                });
+
+                // Don't need to test more than this. The rest is covered in `workflowit`.
+                it("should expose a new workflow on `App.workflows`", () => {
+                    App.workflows.should.have.property("start");
+                    App.workflows.start.should.be.an.instanceOf(App.Workflow);
+                    App.workflows.start.should.equal(this.wf);
                 });
             });
         });
