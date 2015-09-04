@@ -4,6 +4,7 @@ import SpecFromClass from "../lib/di/SpecFromClass";
 import SpecFromFn from "../lib/di/SpecFromFn";
 import SpecFromValue from "../lib/di/SpecFromValue";
 import ActionSpec from "../lib/di/ActionSpec";
+import SpecRef from "../lib/di/SpecRef";
 
 // Begin sample modules
 class Foo {
@@ -98,8 +99,10 @@ describe("SpecRegistration", function () {
             beforeEach(() => {
                 this.colors = ["red"];
                 this.specs = new SpecRegistration(
+                    new SpecFromValue("newColors", ["orange", "black"]),
+
                     new SpecFromClass("foo", Foo)
-                        .setArg(1, this.colors),
+                        .setArg(1, new SpecRef("newColors")),
 
                     new SpecFromClass("baz", Foo)
                         .setFirstArg("one")
@@ -108,7 +111,7 @@ describe("SpecRegistration", function () {
                         .setFourthArg("four"),
 
                     new SpecFromFn("bar", createBar)
-                        .setAllArgs(1, 2, 3)
+                        .setAllArgs(new SpecRef("foo"), new SpecRef("baz"), true)
                 );
                 this.config = {};
                 this.specs.writeTo(this.config);
@@ -119,7 +122,7 @@ describe("SpecRegistration", function () {
                 this.config.foo.should.eql({
                     create: {
                         module: Foo,
-                        args: [{ $ref: "bar" }, this.colors],
+                        args: [{ $ref: "bar" }, { $ref: "newColors" }],
                         isConstructor: true
                     }
                 });
@@ -141,7 +144,7 @@ describe("SpecRegistration", function () {
                 this.config.bar.should.eql({
                     create: {
                         module: createBar,
-                        args: [1, 2, 3],
+                        args: [{ $ref: "foo" }, { $ref: "baz" }, true],
                         isConstructor: false
                     }
                 });
