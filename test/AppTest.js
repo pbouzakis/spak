@@ -18,6 +18,7 @@ describe("App", function () {
             App.should.itself.respondTo("localize");
             App.should.itself.ownProperty("events");
             App.should.itself.ownProperty("config");
+            App.should.itself.ownProperty("workflows");
         });
 
         it("should provide inner classes", () => {
