@@ -26,6 +26,7 @@ The following [template methods](https://en.wikipedia.org/wiki/Template_method_p
 interface App.Delegate {
     createBootstrapper(components: Array<YepAppComponent>);
     createEventBus();
+    createWorkflows();
     createActions(commands: Array<object>);
     provideSession();
     provideLogger();
@@ -47,6 +48,10 @@ Create the bootstrapper for the application. The bootstrapper is in charge of in
 #### `createEventBus()` *(Optional)*
 Create the centralized event bus for the application. Will be saved and exposed as `App.events`.
 `App.Delegate` implementation return `EventBus`.
+
+#### `createWorkflows()` *(Optional)*
+Create the workflows object used by the applicatoin.
+`App.Delegate` implementation return `AppWorkflows`.
 
 #### `createActions(commands: Array<object>)` *(Optional)*
 Create the action dispatcher for the application.
