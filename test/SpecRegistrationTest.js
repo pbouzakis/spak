@@ -1,4 +1,5 @@
 /*jshint expr: true */
+import _ from "underscore";
 import SpecRegistration from "../lib/di/SpecRegistration";
 import SpecFromClass from "../lib/di/SpecFromClass";
 import SpecFromFn from "../lib/di/SpecFromFn";
@@ -199,7 +200,7 @@ describe("SpecRegistration", function () {
                 this.config.placeOrder.should.eql({
                     create: {
                         module: AddOrder,
-                        args: [{ $ref: "theRepo"}],
+                        args: [{ $ref: "theRepo" }],
                         isConstructor: true
                     },
                     action: ["placeOrder"]
@@ -215,6 +216,81 @@ describe("SpecRegistration", function () {
                         isConstructor: true
                     },
                     action: ["removeOrder"]
+                });
+            });
+        });
+
+        describe("when specs have multiple roles", () => {
+            beforeEach(() => {
+                this.specs = new SpecRegistration(
+                    new SpecFromClass(["Foo", "OrderService"], Foo),
+                    new SpecFromValue(["Colors", "PickerOptions"], colors),
+                    new ActionSpec(["PlaceOrder", "AddOrder"], AddOrder)
+                );
+                this.config = {};
+                this.specs.writeTo(this.config);
+            });
+
+            it("should create a config with `foo` spec'd from the class Foo", () => {
+                this.config.should.have.property("foo");
+                this.config.foo.should.eql({
+                    create: {
+                        module: Foo,
+                        args: [{ $ref: "bar" }, { $ref: "colors" }],
+                        isConstructor: true
+                    }
+                });
+            });
+
+            it("should create a config with `orderService` aliased from `foo`", () => {
+                this.config.should.have.property("orderService");
+                this.config.orderService.should.eql({
+                    create: {
+                        module: _.identity,
+                        args: [{ $ref: "foo" }],
+                        isConstructor: false
+                    }
+                });
+            });
+
+            it("should create a config with `colors` spec'd from colors array", () => {
+                this.config.should.have.property("colors");
+                this.config.colors.should.eql({
+                    literal: colors
+                });
+            });
+
+            it("should create a config with `pickerOptions` aliased from `colors`", () => {
+                this.config.should.have.property("pickerOptions");
+                this.config.pickerOptions.should.eql({
+                    create: {
+                        module: _.identity,
+                        args: [{ $ref: "colors" }],
+                        isConstructor: false
+                    }
+                });
+            });
+
+            it("should create a config with `placeOrder` spec'd from the class PlaceOrder", () => {
+                this.config.should.have.property("placeOrder");
+                this.config.placeOrder.should.eql({
+                    create: {
+                        module: AddOrder,
+                        args: [{ $ref: "theRepo" }],
+                        isConstructor: true
+                    },
+                    action: ["placeOrder", "addOrder"]
+                });
+            });
+
+            it("should create a config with `addOrder` aliased from `placeOrder`", () => {
+                this.config.should.have.property("addOrder");
+                this.config.addOrder.should.eql({
+                    create: {
+                        module: _.identity,
+                        args: [{ $ref: "placeOrder" }],
+                        isConstructor: false
+                    }
                 });
             });
         });
