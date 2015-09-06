@@ -66,21 +66,33 @@ class AddItem extends Action {
 
 An event command bus is exposed on the `App` object.
 This is a simple pubsub object that can be used by modules and objects to notify other interested parties of a state change or other key events that may have just occurred.
-An event should represent something that just happened, NOT something about to happen. We recommend using `beforeFooOccurred` if you need to notify right before something occurs.
+
+An event should represent something that just happened, NOT something about to happen.We recommend using `beforeFooOccurred` if you need to notify right before something occurs.
 
 The command bus is implement by [`pubit-as-promised`](http://github.com/YuzuJS/pubit-as-promised).
+
+Events should be namespaced using the following convention: `**namespace**.eventName`.
+
 
 ```javascript
 import { App } from "@yuzu/yep-app";
 
 export function foo() {
+    // Here we listen to an event
+    // with namespace of `item` and event is `favorited`.
     App.events.on("item.favorited", (item) => console.log("an item just favorited", item);
 
     favorites.add(item);
-    App.events.publish("favoritesChanged", favorites);
+    App.events.publish("user.favoritesStored", favorites);
 
     // pubit-as-promised allows async promised
-    App.events.publish.when("favoritesChanged", favorites).done(log);
+    App.events.publish.when("user.favoritesStored", favorites).done(log);
 }
 
 ```
+
+### App namespaced events.
+Since the event bus is system wide, we can't list all events here.
+However, `yep-app` owns the `app` namespace.
+
+- `app.ready(app, delegate)` - Async event that is published right before the delegate.onReady is invoked.

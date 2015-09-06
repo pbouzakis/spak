@@ -88,10 +88,15 @@ describe("App", function () {
 
         describe("successfully", () => {
             beforeEach((done) => {
+                this.appReadyListener = sinon.stub();
+                this.delegateHandlers.onBootstrapped = sinon.spy(() => {
+                    App.events.once("app.ready", this.appReadyListener);
+                });
                 this.delegateHandlers.onReady = sinon.spy(done);
                 this.delegateHandlers.handleRunError = sinon.spy(done);
                 this.cfg1 = { foo: "foo"};
                 this.cfg2 = { env: "dev" };
+
                 App.run(
                     new App.Components(...this.componentList),
                     new App.Config(this.cfg1, this.cfg2),
@@ -190,6 +195,15 @@ describe("App", function () {
 
             it("should message the app delegate that app has been bootstrapped", () => {
                 this.delegateHandlers.onBootstrapped.should.have.been.called;
+            });
+
+            it("should have published `app.ready`", () => {
+                this.appReadyListener.should.have.been.calledWith(sinon.match((ev) => {
+                    return ev.should.eql({
+                        app: App.instance(),
+                        delegate: App.instance()._delegate
+                    });
+                }));
             });
 
             it("should message the app delegate that app is ready for action!", () => {
