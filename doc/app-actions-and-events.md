@@ -91,6 +91,10 @@ export function foo() {
 
 ```
 
+All events published by `App.events` can become be listened to automatically by creating an `AppHook` and adding the hook to the specs.
+
+[See the `AppHooks` docs.](./app-hooks.md)
+
 ### App namespaced events.
 Since the event bus is system wide, we can't list all events here.
 However, `yep-app` owns the `app` namespace.

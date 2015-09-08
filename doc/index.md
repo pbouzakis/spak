@@ -7,6 +7,7 @@
 - [Philosophy of `yep-app`](./philosophy.md)
 - [Application components](./app-component.md)
 - [Application action and events](./app-actions-and-events.md)
+- [Application hooks](./app-hooks.md)
 - [Application configuration](./app-config.md)
 - [Custom functionality via AppDelegate](./app-delegate.md)
 - [How the app is started, bootstrap and run](./app-run.md)

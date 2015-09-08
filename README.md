@@ -11,6 +11,7 @@ A micro application framework providing the following:
 - [application configuration](./doc/app-config.md)
 - [action dispatcher](./doc/app-actions-and-events.md#actions)
 - [event command bus](./doc/app-actions-and-events.md#events)
+- [hooks](./doc/app-hooks.md)
 - [app workflow](./doc/app-workflows.md)
 - [dependency injection wiring](./doc/di.md)
 - [ES decorators](./doc/decorators.md)
