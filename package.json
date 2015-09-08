@@ -1,6 +1,6 @@
 {
   "name": "@yuzu/yep-app",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Modules for building a yep app.",
   "main": "index.js",
   "dependencies": {
