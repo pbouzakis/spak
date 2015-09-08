@@ -5,6 +5,7 @@ import SpecFromClass from "../lib/di/SpecFromClass";
 import SpecFromFn from "../lib/di/SpecFromFn";
 import SpecFromValue from "../lib/di/SpecFromValue";
 import ActionSpec from "../lib/di/ActionSpec";
+import HooksSpec from "../lib/di/HooksSpec";
 import SpecRef from "../lib/di/SpecRef";
 
 // Begin sample modules
@@ -39,6 +40,16 @@ class RemoveOrder {
     }
     get componentName() {
         return "RemoveOrder";
+    }
+}
+class MyHooks {
+    static get inject() {
+        return ["theRepo"];
+    }
+}
+class MyOtherHooks {
+    static get inject() {
+        return ["AddOrder", "theRepo"];
     }
 }
 // End sample modules
@@ -216,6 +227,43 @@ describe("SpecRegistration", function () {
                         isConstructor: true
                     },
                     action: ["removeOrder"]
+                });
+            });
+        });
+
+        describe("with a hooks spec", () => {
+            beforeEach(() => {
+                this.specs = new SpecRegistration(
+                    new HooksSpec(MyHooks),
+                    new HooksSpec(MyOtherHooks)
+                );
+                this.config = {};
+                this.specs.writeTo(this.config);
+            });
+
+            it("should create a config with hooks spec'd from the class MyHooks", () => {
+                var specKey = this.specs._specs[0].specKey;
+                this.config.should.have.property(specKey);
+                this.config[specKey].should.eql({
+                    create: {
+                        module: MyHooks,
+                        args: [{ $ref: "theRepo" }],
+                        isConstructor: true
+                    },
+                    init: { subscribeTo: "app.ready" }
+                });
+            });
+
+            it("should create a config with hooks spec'd from the class MyOtherHooks", () => {
+                var specKey = this.specs._specs[1].specKey;
+                this.config.should.have.property(specKey);
+                this.config[specKey].should.eql({
+                    create: {
+                        module: MyOtherHooks,
+                        args: [{ $ref: "AddOrder" }, { $ref: "theRepo" }],
+                        isConstructor: true
+                    },
+                    init: { subscribeTo: "app.ready" }
                 });
             });
         });
