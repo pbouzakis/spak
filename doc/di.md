@@ -3,32 +3,40 @@
 To quote the Angular docs:
 
 > "Dependency Injection (DI) is a software design pattern that deals
-> with how components get hold of their dependencies.
+> with how components get hold of their dependencies."
 
-Behind the scenes, `yep-app` implements DI via [wire js package by cujo](https://github.com/cujojs/wire).
+Behind the scenes, `yep-app` implements DI via the [wire npm package by cujojs](https://github.com/cujojs/wire).
 
-The DI system is in control of creating key objects of your system. Your modules/object declare what they need, which in turn, those modules declare what the need. This allows your module to get what it needs without worrying about *how* to go about creating it.
+The DI system is in control of creating key objects of your system. Your modules declare what types of objects they want/depend on, which we will call `roles`. In turn, the modules that play those roles declare what the need. The DI system will traverse this tree until all dependencies have been resolved. This allows your module to get what it needs without worrying about *how* to go about creating it.
 
-## Declare what you need in your default export.
-The class `AwesomeService` is declaring that it needs `fooService`.
-Below an `inject` property is saved on the export to declare what needs to be injected.
+## Isn't that what `require` or `import` is for?
+No. When you import another module that is a static dependency. Something that can not change. DI will declare run time dependencies. This is why we call it a role. You are not hardcoding your module to a particular module. Instead your module is saying "I need an object that can play this or `role`", in other words, an object that implements an `interface`. Your module now depends upon an abstraction rather than a detail or specific implementation.
+
+## What's a role again?
+A `role` is similar to an interface. It's a contract between 2 objects.
+Let's say module A depends on 3 roles (foo, baz, and bar). Any object can play these roles as long as they have the right interface. An object can then play one or multiple roles. You define what objects are going to play these roles when registering your spec. [See below](#DI-Specifications) for more on specs.
+
+## How to declare what you roles you need for an `export`
+The class `AwesomeService` is declaring that it needs an object to play the `role` of `FooService`.
+
+Below an `inject` property is saved on the export to declare what needs to be injected. The `inject` property is metadata about your  `export`.
 
 ```javascript
 export default class AwesomeService {
-    static get inject() { return ["fooService"] }
+    static get inject() { return ["fooService"]; }
     constructor(fooService) {
         this._service = fooService;
     }
 }
 
-// Or w/ old school function constructor
+// Or for you ES5 folk out there
 function AwesomeService(fooService) {
     this._service = fooService;
 }
 AwesomeService.inject = ["fooService"];
 export default AwesomeService;
 
-// However we can use a decorator to make this a bit cleaner.
+// `yep-app comes with a decorator to make this a bit cleaner.
 @inject("fooService")
 export default AwesomeService {
     constructor(fooService) {
@@ -36,111 +44,156 @@ export default AwesomeService {
     }
 }
 ```
-However, if you are using the awesome [decoratify plugin](https://github.com/yuzujs/decoratify) you won't have to add the decorator mainly. If you have a default export [decoratify](https://github.com/yuzujs/decoratify) will add this for you during the browserify build.
+*NOTE: If your export is the default export you can the have the awesome [decoratify plugin](https://github.com/yuzujs/decoratify) automatically declare your role depedencies for you. [See decoratify for more info](https://github.com/yuzujs/decoratify).*
 
-## IOC Specifications
-When the system is run, during bootstrap, the DI system will gather specifications aka `specs` provided by the components to build an `IocContainer`. This object is simply a bag of all the instantiated objects as *specified* by the components.
 
-A `specs` object is exposed on the `AppBootstrapper#spec`. It is also the first argument passed to the `YepAppComponent#register` method.
+## DI Specifications
+*NOTE: The specs API have recently changed. Looking for the old api docs? [Click here.](./di-v1.md)*
 
-Take a look at the [App.run lifecycle docs](./app-run.md#sequence-diagram). Anywhere you see the `bootstrapper` being passed, you can register with the specs.
+When the `App` is run, the `Bootstrapper` will run through the components of the app, asking each to register their specifications. The specs registered by the components instructs the DI system on what `roles` that component provides and what `roles` those objects depend on (*via the `inject` metadata property mentioned above)*. It is the job of the DI system to construct these objects and resolve their dependencies.
 
+When the DI system is done building the graph of objects, it returns an `IocContainer`. The container is simply of bag of all the object built by the DI system, with each key matching the role name. *This container object can be referenced by components, but should not be used by the modules inside your `lib` directly.*
+
+Take a look at the [App.run and bootstrap lifecycle docs](./app-run.md#sequence-diagram) for more details. Anywhere you see the `Bootstrapper` or `Specs` being passed, you can register your modules.
+
+### Example spec
 ```javascript
-class MyComponent {
-    get metadata() { return { name: "@app/my-component" }}
+import { SpecRegistration, SpecFromClass, SpecFromFn, SpecFromValue } from "@yuzu/yep-app/di";
+import { component } from "@yuzu/yep-app/decorators";
 
-    onBeforeAppBootstrapped(bootstrapper) {
-        console.log(bootstrapper.spec); // We have the specs object!
-    }
-
-    register(specs) {
-        console.log(specs); // We have the specs object!
+@component("@app/my-component")
+export default class MyComponent {
+    register() {
+        return new SpecRegistration(
+            new SpecFromClass("awesomeService", AwesomeService),
+            new SpecFromFn("fooService", createFooService),
+            new SpecFromValue("fooColors", ["red", "green", "blue"])
+        };
     }
 }
 ```
 
-### Example spec
-```javascript
+The above shows 3 roles being provided. The `register` method returns a `SpecRegistration` will 3 different ways to provide roles.
+You can pass any many individual spec objects as arguments as you want.
 
-bootstrapper.spec
-    .creator("awesomeService", AwesomeService)
-    .factory("fooService", makeFooService)
-    .literal("settings", { color: "blue", size: 100 })
+If you are hooking into a lifecycle method, you can use the `Bootstrapper.specs.addRegistration` method.
+
+```javascript
+@component("@app/my-component")
+export default class MyComponent {
+    onBeforeAppBoostrapped(bootstrapper) {
+        bootstrapper.specs.addRegistration(
+            new SpecRegistration(
+                new SpecFromClass("syncService", SyncService)
+            )
+        );
+    }
+    register() {
+        return new SpecRegistration(
+            new SpecFromClass("awesomeService", AwesomeService),
+            new SpecFromFn("fooService", createFooService),
+            new SpecFromValue("fooColors", ["red", "green", "blue"])
+        };
+    }
+}
 ```
 
-You can see from our earlier module, we declare our `awesomeService` as well as the `fooService` it depends on. The system can now provide `awesomeService` with what it needs. If `fooService` depends on other modules, they need to be defined here or in some other module's register method.
+## The `Spec` API
+The following classes are used to instruct the DI system on how to build your objects. Keep in mind that `role` names should not reveal *how* an object will play the role unless a module in the system *depends* on the implementation. The idea is that the `role` represents an abstraction. Despite this most of the time, your class might be named the same as the role name. Just remember that this is not always the case.
 
-### Retrieving objects of the `IocContainer` in Application hooks.
+All `Spec` classes can take either a `roleName` string or an array of `roleNames`. This is because one object might play multiple roles.
 
-When the `App.run` method is called, it runs through all components, with each component registering it's services with the `specs` object. Once done, they are saved in the `IocContainer` object. The IocContainer will contain keys matching the interface names registered with the spec.
+### `SpecFromClass (roles: string|array<string>, Class)`
+The DI system will `new` up your class. The object created will play the role or roles from `roleNames`. The object is also saved inside the `IocContainer`.
 
-Some of the application hoooks ([see the App#run lifecycle for which hooks do])(./app-run.md#sequence-diagram))
+```javascript
+// Create an instance of Orders to play the role of orders.
+new SpecFromClass("Orders", Orders)
+
+// Create an instance of Order` to play the role of `Orders` and `PlacementDelivery`.
+new SpecFromClass(["Orders", "PlacementDelivery"], Orders);
+```
+In the both examples, any other object in the system can now depend on the `role` `Orders`. The `IocContainer` will contain a key of `Orders` with the object. In the 2nd example, another role, 'PlacementDelivery`, is also provided, and an additional `PlacementDelivery` key will be exposed pointing to the same object.
+
+### `SpecFromFn(roles: string|array<string>, fn)`
+Same API as `SpecFromClass` only the DI system will just call you function `fn. The function should be a factory and return an object .
+
+```javascript
+// The DI system will call `createOrders` fn.
+new SpecFromFn("Orders", createOrders);
+```
+
+### `SpecFromValue(roles: string|array<string>, value: any)`
+When you already have a created object/value and you don't need the DI to create it you can use the `SpecFromValue` class.
+
+```javascript
+new SpecFromValue("favoriteColor", "blue");
+new SpecFromValue("sampleItem", { name: "Book 1", id: 123 });
+new SpecFromValue("logger", (...args) => console.log(...args));
+```
+
+### `ActionSpec(Action)` and `ActionSpec(roles: string|array<string>, Action)`
+Declare an application [action](./app-actions-and-events.md).
+If your action's self describes its component name you don't need to pass in the name.
+
+```javascript
+new ActionSpec(SaveItem);
+new ActionSpec("saveItem", SaveItem);
+new ActionSpec(["saveItem", "storeItem"], SaveItem);
+```
+
+### Altering the arguments passed to your fn/Class.
+When you need to manually set what arguments should be passed to your component you can use the `Spec#args` API.
+
+*NOTE: The following does not apply to `SpecFromValue` as the object has already been created.*
+
+#### `Spec#set(First|Second|Third|Fourth)Arg`
+
+```javascript
+
+// The first arg passed to the constructor will always be 5.
+new SpecFromClass("foo", Foo).setFirstArg(5);
+
+// The first arg will the object that plays the role `FooRepo`.
+new SpecFromClass("foo", Foo).setFirstArg(new SpecRef("FooRepo"));
+```
+
+#### `Spec#setAllArgs`
+```javascript
+// Reset all args.
+new SpecFromClass("foo", Foo).setAllArgs(1, 2, 3);
+
+// Just as before you can pass references to roles
+new SpecFromClass("foo", Foo).setAllArgs(1, new SpecRef("FooRepo"), 3);
+```
+
+#### `Spec#setArg`
+```javascript
+// Set the first arg (0 is the index).
+new SpecFromClass("foo", Foo).setArg(0, new SpecRef("FooRepo"));
+```
+
+### Retrieving objects from the `IocContainer` inside Application hooks.
+
+As mentioned above, the DI system outputs an `IocContainer` object.
+
+You can reference this object from within some application lifecycle hooks. *([See the App#run lifecycle for which hooks do](./app-run.md#sequence-diagram))*
 are passed a reference to the `IocContainer`.
 
 With the specs used above the following would be in the `IocContainer`
 
-```
+```javascript
 onAppBootstrapped(container) {
-    console.log(container.awesomeService); // This would be an object that is an instanceof `AwesomeService`.
-    console.log(container.fooService); // This would be an object returned from calling `makeFooService`
-    console.log(container.settings); // { color: "blue", size: 100 }
+    // Notice keys match the role name the object plays/implements
+    console.log(container.awesomeService);
+    console.log(container.fooService);
+    console.log(container.settings);
+}
+
+// Or you can be ES6 fanboy
+onAppBootstrapped({ awesomeService, fooService, settings }) {
+    console.log(awesomeService);
+    console.log(fooService);
+    console.log(settings);
 }
 ```
-
-## IOC `specs` API
-*The spec methods are all chainable.*
-
-Notice below that we are using the term `interface` for the key used in the `IocContainer`.
-This is because to the objects in the system they are injected with **INTERFACES`** and not concrete implementations. Another way to think of it is objects playing *roles*. A module will ask (depend on) an object to be passed in to play a specific role (have the required methods and properties).
-
-Interface names should not reveal *how* an object will play the role unless a module in the system *depends* on the implementation.
-
-### specs#creator(interface: string|array<string>, Class)
-The spec is expecting a JS class (function constructor).
-The DI system will new the class up and save a reference in the `IocContainer` with key equaling the `interface`.
-
-```javascript
-// Specify the class `Orders` to play role of `orders in the system.
-// Any object will be able to ask for an object playing the role of `orders` and get the correct interface.
-spec.creator("orders", Orders);
-
-// Specify the class `Order` to play the role of `orders` and `placementDelivery`.
-spec.creator(["orders", "placementDelivery"], Orders);
-```
-
-### specs#factory(interface: string|array<string>, factoryFn)
-Same as `creator` only the spec is provided with a function instead of a class. The function should be a factory and a value.
-
-```
-// The DI system will simply call `createOrders`, saving the returned value in the `IocContainer`.
-spec.factory("orders", createOrders);
-```
-
-### specs#literal(interface: string|array<string>, value: any)
-Literal is used when you already have a created service/object/value ready to go. You just want this resource available for others.
-
-```javascript
-spec.literal("favoriteColor", "blue")
-    .literal("sampleItem", { name: "Book 1", id: 123 })
-    .literal("logger", (...args) => console.log(...args));
-```
-
-### specs#alias(interfaceToAlias: string, aliasFor: string)
-This allows you to add more roles to an object already registered in the spec.
-The `aliasFor` param is interface of an object you want to add a new role for.
-
-Most of the time the above methods will support this functionality as you can pass an array of interfaces.
-For times when you are breaking the spec up, use `alias`.
-
-```
-spec.creator("orders", Orders)
-
-// Later in the spec, probably in another component.
-
-// This is saying whatever object implementing order is also going to implement `placementDelivery`.
-spec.alias("placementDelivery", "orders");
-```
-
-### specs#action(Action) and specs#(interface: string, Action)
-Declare an application [action](./app-actions-and-events.md).
-If your action's self describes its component name you don't need to pass in the name.
