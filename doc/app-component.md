@@ -73,10 +73,10 @@ node_modules/
 ```
 
 ### Top level files
-- package.json (with npm scripts for running githooks, lint, and tests)
+- package.json (with npm scripts for running githooks, [lint](https://github.com/YuzuJS/yep-eslint-config), and tests)
 - pre-commit and pre-push githook scripts
 - README.md
-- lint and gitignore configs
+- [lint](https://github.com/YuzuJS/yep-eslint-config) and gitignore configs
 - index.js main module
 
 ### the main module (entry point)
