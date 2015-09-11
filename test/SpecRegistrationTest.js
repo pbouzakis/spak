@@ -4,6 +4,8 @@ import SpecRegistration from "../lib/di/SpecRegistration";
 import SpecFromClass from "../lib/di/SpecFromClass";
 import SpecFromFn from "../lib/di/SpecFromFn";
 import SpecFromValue from "../lib/di/SpecFromValue";
+import ConfigMod from "../lib/di/ConfigMod";
+import SpecWithConfigMod from "../lib/di/SpecWithConfigMod";
 import ActionSpec from "../lib/di/ActionSpec";
 import HooksSpec from "../lib/di/HooksSpec";
 import SpecRef from "../lib/di/SpecRef";
@@ -71,7 +73,12 @@ describe("SpecRegistration", function () {
                 this.specs = new SpecRegistration(
                     new SpecFromClass("foo", Foo),
                     new SpecFromFn("bar", createBar),
-                    new SpecFromValue("colors", colors)
+                    new SpecFromValue("colors", colors),
+                    new ConfigMod((cfg) => cfg.custom = true),
+                    new SpecWithConfigMod(
+                        new SpecFromClass("foo2", Foo),
+                        (cfg) => cfg.hasChanged = true
+                    )
                 );
                 this.config = {};
                 this.specs.writeTo(this.config);
@@ -103,6 +110,23 @@ describe("SpecRegistration", function () {
                 this.config.should.have.property("colors");
                 this.config.colors.should.eql({
                     literal: colors
+                });
+            });
+
+            it("should create a config with `custom` property from `ConfigMod`", () => {
+                this.config.should.have.property("custom");
+                this.config.custom.should.be.true;
+            });
+
+            it("should create a config with `foo2` spec'd from class Foo by `SpecWithConfig`", () => {
+                this.config.should.have.property("foo2");
+                this.config.foo2.should.eql({
+                    create: {
+                        module: Foo,
+                        args: [{ $ref: "bar" }, { $ref: "colors" }],
+                        isConstructor: true
+                    },
+                    hasChanged: true
                 });
             });
         });
