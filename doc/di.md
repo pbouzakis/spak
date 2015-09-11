@@ -142,7 +142,15 @@ new ActionSpec("saveItem", SaveItem);
 new ActionSpec(["saveItem", "storeItem"], SaveItem);
 ```
 
-### Altering the arguments passed to your fn/Class.
+### `HooksSpec(Action)`
+Declare an [application hooks](./app-hooks.md) for the application. No role is needed as they are not exposed to any other
+module. The hook passed in, should be a class.
+
+```javascript
+new HooksSpec(LockerHooks);
+```
+
+## Altering the arguments passed to your fn/Class.
 When you need to manually set what arguments should be passed to your component you can use the `Spec#args` API.
 
 *NOTE: The following does not apply to `SpecFromValue` as the object has already been created.*
@@ -171,6 +179,27 @@ new SpecFromClass("foo", Foo).setAllArgs(1, new SpecRef("FooRepo"), 3);
 ```javascript
 // Set the first arg (0 is the index).
 new SpecFromClass("foo", Foo).setArg(0, new SpecRef("FooRepo"));
+```
+
+## Advanced API (Avoid usage if possible)
+
+The follow spec types should **rarely** by used, but server as a last resort when needing
+to modify the spec config manually.
+
+### `ConfigMod(updateConfig: fn)`
+Get back the raw specs config to modify yourself.
+You pass in a function that takes one argument, the config.
+
+```javascript
+new ConfigMod((cfg) => cfg.foo.literal = 5);
+```
+
+### `SpecWithConfigMod(Spec, updateConfig: fn)`
+Pass another spec object (one of the spec classes above), and pass in a function that takes
+the config created by the spec.
+
+```javascript
+new SpecWithConfigMod(new SpecFromValue("favColor", favColor), (cfg) => cfg.init = "toHex");
 ```
 
 ### Retrieving objects from the `IocContainer` inside Application hooks.
