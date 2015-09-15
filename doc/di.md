@@ -46,6 +46,31 @@ export default AwesomeService {
 ```
 *NOTE: If your export is the default export you can the have the awesome [decoratify plugin](https://github.com/yuzujs/decoratify) automatically declare your role depedencies for you. [See decoratify for more info](https://github.com/yuzujs/decoratify).*
 
+### Property inject
+You can also have a getter property injected into your export.
+This is useful when your export is not a provided role, but you still depend on roles.
+
+```javascript
+@propInject("fooService", "orders")
+export default AwesomeService {
+    find() {
+        var order = this.order.latest;
+        return this.fooService.findById(order.id);
+    }
+}
+```
+You can specify multiple roles as shown above.
+If you want to use another name of the propery inject that does not match the role, you must make the argument in array.
+
+```javascript
+@propInject(["fooService", "fooRepo"], "orders")
+export default AwesomeService {
+    find() {
+        var order = this.order.latest;
+        return this.fooRepo.findById(order.id);
+    }
+}
+```
 
 ## DI Specifications
 *NOTE: The specs API have recently changed. Looking for the old api docs? [Click here.](./di-v1.md)*
