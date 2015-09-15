@@ -206,6 +206,30 @@ new SpecFromClass("foo", Foo).setAllArgs(1, new SpecRef("FooRepo"), 3);
 new SpecFromClass("foo", Foo).setArg(0, new SpecRef("FooRepo"));
 ```
 
+## Basing your specs on flags and conditionals
+If you find yourself performing a bunch of checks in your registration,
+you can use `CondSpecs` to group your specs.
+
+### CondSpecs(flag: boolean|function:boolean)
+Pass a boolean flag or fn that returns a boolean. Then use the
+`whenTrue` and `whenFalse` methods to specify which set of specs to register
+based on the flag.
+
+```javascript
+new SpecRegistration(
+    new CondSpecs(App.config.isFooEnabled)
+        .whenTrue(
+            new SpecFromClass("foo", Foo),
+            new SpecFromValue("maxCount", 100)
+        )
+        .whenFalse(
+            new SpecFromClass("foo", NullFoo),
+            new SpecFromValue("maxCount", 0)
+        );
+);
+
+```
+
 ## Advanced API (Avoid usage if possible)
 
 The follow spec types should **rarely** by used, but server as a last resort when needing

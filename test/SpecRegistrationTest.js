@@ -1,6 +1,6 @@
 /*jshint expr: true */
 import _ from "underscore";
-import { SpecRegistration, SpecRef,
+import { SpecRegistration, SpecRef, CondSpecs,
          SpecFromClass, SpecFromFn, SpecFromValue,
          ConfigMod, SpecWithConfigMod,
          ActionSpec, HooksSpec } from "../lib/di";
@@ -210,6 +210,91 @@ describe("SpecRegistration", function () {
                         module: FooNoInject,
                         args: [],
                         isConstructor: true
+                    }
+                });
+            });
+        });
+
+        describe("with conditional specs", () => {
+            var createOtherBar = () => { return {}; };
+            var otherColors = ["orange", "black"];
+
+            [true, false, () => true].forEach((flag) => {
+                var isCondIsTrue = Boolean(typeof flag === "function" ? flag() : flag);
+                describe("are set to " + isCondIsTrue, () => {
+                    beforeEach(() => {
+                        this.specs = new SpecRegistration(
+                            new SpecFromClass("foo", Foo),
+                            new CondSpecs(flag)
+                                .whenTrue(
+                                    new SpecFromFn("bar", createBar),
+                                    new SpecFromValue("colors", colors)
+                                )
+                                .whenFalse(
+                                    new SpecFromFn("bar", createOtherBar),
+                                    new SpecFromValue("colors", otherColors),
+                                    new SpecFromValue("size", 100)
+                                )
+                        );
+                        this.config = {};
+                        this.specs.writeTo(this.config);
+                    });
+
+                    it("should create a config with `foo` spec'd from class Foo", () => {
+                        this.config.should.have.property("foo");
+                        this.config.foo.should.eql({
+                            create: {
+                                module: Foo,
+                                args: [{ $ref: "bar" }, { $ref: "colors" }],
+                                isConstructor: true
+                            }
+                        });
+                    });
+
+                    if (isCondIsTrue) {
+                        it("should create a config with `bar` spec'd from fn createBar", () => {
+                            this.config.should.have.property("bar");
+                            this.config.bar.should.eql({
+                                create: {
+                                    module: createBar,
+                                    args: [{ $ref: "colors" }],
+                                    isConstructor: false
+                                }
+                            });
+                        });
+
+                        it("should create a config with `colors` spec'd from colors array", () => {
+                            this.config.should.have.property("colors");
+                            this.config.colors.should.eql({
+                                literal: colors
+                            });
+                        });
+
+                    } else {
+                        it("should create a config with `bar` spec'd from fn createOtherBar", () => {
+                            this.config.should.have.property("bar");
+                            this.config.bar.should.eql({
+                                create: {
+                                    module: createOtherBar,
+                                    args: [],
+                                    isConstructor: false
+                                }
+                            });
+                        });
+
+                        it("should create a config with `colors` spec'd from otherColors array", () => {
+                            this.config.should.have.property("colors");
+                            this.config.colors.should.eql({
+                                literal: otherColors
+                            });
+                        });
+
+                        it("should create a config with `size` spec'd from literal 5 number", () => {
+                            this.config.should.have.property("size");
+                            this.config.size.should.eql({
+                                literal: 100
+                            });
+                        });
                     }
                 });
             });
