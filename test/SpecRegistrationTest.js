@@ -1,14 +1,9 @@
 /*jshint expr: true */
 import _ from "underscore";
-import SpecRegistration from "../lib/di/SpecRegistration";
-import SpecFromClass from "../lib/di/SpecFromClass";
-import SpecFromFn from "../lib/di/SpecFromFn";
-import SpecFromValue from "../lib/di/SpecFromValue";
-import ConfigMod from "../lib/di/ConfigMod";
-import SpecWithConfigMod from "../lib/di/SpecWithConfigMod";
-import ActionSpec from "../lib/di/ActionSpec";
-import HooksSpec from "../lib/di/HooksSpec";
-import SpecRef from "../lib/di/SpecRef";
+import { SpecRegistration, SpecRef,
+         SpecFromClass, SpecFromFn, SpecFromValue,
+         ConfigMod, SpecWithConfigMod,
+         ActionSpec, HooksSpec } from "../lib/di";
 
 // Begin sample modules
 class Foo {
