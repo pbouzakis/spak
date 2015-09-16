@@ -36,7 +36,7 @@ class RemoveOrder {
         return [];
     }
     get componentName() {
-        return "RemoveOrder";
+        return "removeOrder";
     }
 }
 class MyHooks {
@@ -303,7 +303,7 @@ describe("SpecRegistration", function () {
         describe("with an action spec", () => {
             beforeEach(() => {
                 this.specs = new SpecRegistration(
-                    new ActionSpec("PlaceOrder", AddOrder),
+                    new ActionSpec("placeOrder", AddOrder),
                     new ActionSpec(RemoveOrder)
                 );
                 this.config = {};
@@ -375,9 +375,9 @@ describe("SpecRegistration", function () {
         describe("when specs have multiple roles", () => {
             beforeEach(() => {
                 this.specs = new SpecRegistration(
-                    new SpecFromClass(["Foo", "OrderService"], Foo),
-                    new SpecFromValue(["Colors", "PickerOptions"], colors),
-                    new ActionSpec(["PlaceOrder", "AddOrder"], AddOrder)
+                    new SpecFromClass(["foo", "orderService"], Foo),
+                    new SpecFromValue(["colors", "pickerOptions"], colors),
+                    new ActionSpec(["placeOrder", "addOrder"], AddOrder)
                 );
                 this.config = {};
                 this.specs.writeTo(this.config);
