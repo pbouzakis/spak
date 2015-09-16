@@ -22,7 +22,7 @@ Add it to your `mocha.opts` file.
 
 ### Run the App in your test setup
 
-You'll need to run the App before running your tests to ensure you modules can access providers, the action dispatcher, of the App object.
+You'll need to run the App before running your tests to ensure your modules can access app providers, the action dispatcher, etc. off the App object.
 
 The `yep-app` package comes with a `TestApp` object that provides all the necessary defaults and runs the app for you.
 
@@ -36,7 +36,7 @@ TestApp.run(); // That was easy!
 
 ### Registering stub actions and objects in the IOC container.
 
-The `TestApp` object comes with a special `registerAction` method and exposes the `IocContainer` object so you can easily stub objects for you tests.
+The `TestApp` object comes with a special `registerAction` method and exposes the `IocContainer` object so you can easily stub objects in your tests.
 
 ```javascript
 
