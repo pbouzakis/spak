@@ -72,6 +72,23 @@ export default AwesomeService {
 }
 ```
 
+If you'd like to inject an object as a static property, use the `staticPropInject` decorator.
+
+```javascript
+@propInject("orders")
+@staticPropInject("Dialog")
+export default SomePanel extends React.Component {
+    render() {
+        <SomePanel.Dialog onClick={this.save.bind(this)}>
+            Well hello!
+        </SomePanel.Dialog>
+    }
+    save() {
+        this.orders.save(); // `propInject` still works.
+    }
+}
+```
+
 ## DI Specifications
 *NOTE: The specs API have recently changed. Looking for the old api docs? [Click here.](./di-v1.md)*
 
