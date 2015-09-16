@@ -14,7 +14,7 @@
 - [App workflows](./app-workflows.md)
 - [Dependency Inject system](./di.md)
 - [Bundled decorators](./decorators.md)
-- [Testing your component](./testing.md)
+- [Testing your components](./testing.md)
 
 ## `App`
 
