@@ -66,6 +66,7 @@ node_modules/
 ```
     lib/
         actions/
+        hooks/
         ui/
         gateways/
         repos/
@@ -86,19 +87,23 @@ An `npm` package can specify a main module, however, the standard is to have an 
 The following is a sample `index.js` module that would live in the root of the component.
 
 ```javascript
+import { component } from "@yuzu/yep-app/decorators";
+import { SpecRegistration, ActionSpec, SpecFromClass } from "@yuzu/yep-app/di";
 import PlaceOrder from "./lib/actions/PlaceOrder";
 import OrderRepo from "./lib/repo/OrderRepoInStorage";
 import StoreGateway from "./lib/gateways/StoreGateway";
 import OrderItem from "./lib/OrderItem";
 import OrderError from "./lib/AuthError";
 
+@component("@yuzu/order")
 export default class OrderComponent {
-    get metadata() { return { name: "@yuzu/auth" }; }
-    register(spec) {
-        spec.action(PlaceOrder)
-            .creator("clientSession", ClientSession)
-            .creator("orderRepo", OrderRepo)
-            .creator("storeGateway", StoreGateway);
+    register() {
+        return new SpecRegistration(
+            new ActionSpec(PlaceOrder),
+            new SpecFromClass("clientSession", ClientSession),
+            new SpecFromClass("orderRepo", OrderRepo),
+            new SpecFromClass("storeGateway", StoreGateway)
+        );
     }
 }
 
@@ -116,12 +121,36 @@ interface YepAppComponent {
     register(): ?Promise<void>; // Optionally return a promise if async is needed.
 
     // Optional
+    onAppConfig(config: AppConfig);  // Set defaults inside App.config
     onBeforeAppBootstrapped(bootstrapper: Bootstrapper);
     onAppComponentsRegistered(bootstrapper: Bootstrapper);
-    onAppBootstrapped(bootstrapper: Bootstrapper);
+    onAppBootstrapped(container: IocContainer);
     priority: number; // Components are bootstrapped by priority then placement in the `App.Components` constructor.
 }
 ```
 *NOTE: ATM `priority` is not being respected by `App.run`.*
+
+### Hooks
+
+#### onAppConfig(config: AppConfig)
+
+First hook called by the app. Here you can set defaults inside the config object. Other objects can then provide additional configuration inside their `onBeforeAppBootstrapped`/
+
+#### onBeforeAppBootstrapped(bootstrapper: Bootstrapper)
+Called before `Component#register` is called.
+Here you can config App.config to alter values for other components.
+You can also register specs early if you'd like.
+
+#### onAppComponentsRegistered(bootstrapper: Bootstrapper)
+All components have been registered with their specs. Here is your last chance to add to the spec.
+
+#### onAppBootstrapped(container: IocContainer)
+The DI system has configured the container, and it is available to pull objects from.
+
+
+
+
+
+
 
 
