@@ -119,6 +119,10 @@ describe("App", function () {
             });
 
             it("should message the app delegate that app is going to be bootstrapped", () => {
+                this.componentList.every((component) => component.onAppConfig.called).should.be.true;
+            });
+
+            it("should message the app delegate that app is going to be bootstrapped", () => {
                 this.delegateHandlers.onBeforeBootstrapped.should.have.been.called;
             });
 
