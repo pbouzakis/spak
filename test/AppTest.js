@@ -118,8 +118,8 @@ describe("App", function () {
                 });
             });
 
-            it("should message the app delegate that app is going to be bootstrapped", () => {
-                this.componentList.every((component) => component.onAppConfig.called).should.be.true;
+            it("should message the app delegate that app config is ready for default configuration", () => {
+                this.componentList.every((component) => component.onAppConfig.calledWith(sinon.match.object)).should.be.true;
             });
 
             it("should message the app delegate that app is going to be bootstrapped", () => {
