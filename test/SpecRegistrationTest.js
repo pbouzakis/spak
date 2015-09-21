@@ -399,7 +399,7 @@ describe("SpecRegistration", function () {
                 this.config.mappers.should.eql({
                     create: {
                         module: Registry,
-                        args: [{ $ref: "foo" }, { name: "Bob" }],
+                        args: ["mappers", { $ref: "foo" }, { name: "Bob" }],
                         isConstructor: true
                     }
                 });
@@ -410,7 +410,7 @@ describe("SpecRegistration", function () {
                 this.config.types.should.eql({
                     create: {
                         module: this.CustomRegistry,
-                        args: [{ $ref: "foo" }, { name: "Frank" }],
+                        args: ["types", { $ref: "foo" }, { name: "Frank" }],
                         isConstructor: true
                     }
                 });
