@@ -192,6 +192,14 @@ module. The hook passed in, should be a class.
 new HooksSpec(LockerHooks);
 ```
 
+### `RegistrySpec(configSpecs: Registry)`
+Declare an registry that the DI system can create based on a spec config.
+For more details see [spec configuration](./app-config.md#specconfig).
+
+```javascript
+new RegistrySpec(this.mappersConfig);
+```
+
 ## Altering the arguments passed to your fn/Class.
 When you need to manually set what arguments should be passed to your component you can use the `Spec#args` API.
 

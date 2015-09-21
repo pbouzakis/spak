@@ -135,11 +135,12 @@ interface YepAppComponent {
 #### onAppConfig(config: AppConfig)
 
 First hook called by the app. Here you can set defaults inside the config object. Other objects can then provide additional configuration inside their `onBeforeAppBootstrapped`/
+This is also a hook you can use to [create registries](./app-config.md#specconfg) for more advanced configs.
 
 #### onBeforeAppBootstrapped(bootstrapper: Bootstrapper)
 Called before `Component#register` is called.
-Here you can config App.config to alter values for other components.
-You can also register specs early if you'd like.
+You can register specs early if you'd like.
+This is also a good hook to [configure app configs](./app-config.md) (which you can access using `this.config`)
 
 #### onAppComponentsRegistered(bootstrapper: Bootstrapper)
 All components have been registered with their specs. Here is your last chance to add to the spec.

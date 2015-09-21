@@ -8,7 +8,7 @@
 - [Application components](./app-component.md)
 - [Application action and events](./app-actions-and-events.md)
 - [Application hooks](./app-hooks.md)
-- [Application configuration](./app-config.md)
+- [Application configuration (including registries)](./app-config.md)
 - [Custom functionality via AppDelegate](./app-delegate.md)
 - [How the app is started, bootstrap and run](./app-run.md)
 - [App workflows](./app-workflows.md)
