@@ -1,9 +1,10 @@
 /*jshint expr: true */
 import _ from "underscore";
+import Registry from "../lib/Registry";
 import { SpecRegistration, SpecRef, CondSpecs,
          SpecFromClass, SpecFromFn, SpecFromValue,
          ConfigMod, SpecWithConfigMod,
-         ActionSpec, HooksSpec } from "../lib/di";
+         ActionSpec, HooksSpec, RegistrySpec } from "../lib/di";
 
 // Begin sample modules
 class Foo {
@@ -368,6 +369,50 @@ describe("SpecRegistration", function () {
                         isConstructor: true
                     },
                     init: { subscribeTo: "app.ready" }
+                });
+            });
+        });
+
+        describe("with a registry spec", () => {
+            beforeEach(() => {
+                this.mappersSpecConfig = new Registry("mappers");
+                this.typesSpecConfig = new Registry("types");
+
+                this.CustomRegistry = function CustomRegistry() {};
+                this.specs = new SpecRegistration(
+                    new RegistrySpec(this.mappersSpecConfig),
+                    new RegistrySpec(this.typesSpecConfig, this.CustomRegistry),
+                    new SpecFromClass("foo", Foo)
+                );
+
+                this.mappersSpecConfig.register(new SpecRef("foo"));
+                this.mappersSpecConfig.register({ name: "Bob" });
+                this.typesSpecConfig.register(new SpecRef("foo"));
+                this.typesSpecConfig.register({ name: "Frank" });
+
+                this.config = {};
+                this.specs.writeTo(this.config);
+            });
+
+            it("should create a registry object `mappers` spec'd from the class Registry", () => {
+                this.config.should.have.property("mappers");
+                this.config.mappers.should.eql({
+                    create: {
+                        module: Registry,
+                        args: [{ $ref: "foo" }, { name: "Bob" }],
+                        isConstructor: true
+                    }
+                });
+            });
+
+            it("should create a registry object `types` spec'd from the class CustomRegistry", () => {
+                this.config.should.have.property("types");
+                this.config.types.should.eql({
+                    create: {
+                        module: this.CustomRegistry,
+                        args: [{ $ref: "foo" }, { name: "Frank" }],
+                        isConstructor: true
+                    }
                 });
             });
         });

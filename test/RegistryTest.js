@@ -39,7 +39,7 @@ describe("Registry", function () {
             });
         });
 
-        it("should 3 items in the registry", () => {
+        it("should contain 3 items", () => {
             this.registry.all().length.should.equal(3);
         });
 
