@@ -70,6 +70,6 @@ export default class MyHooks extends AppHooks {
 
 ```javascript
 new SpecRegistration(
-    new HookSpec(MyHooks)
+    new HooksSpec(MyHooks)
 )
 ```
