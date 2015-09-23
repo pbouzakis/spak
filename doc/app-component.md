@@ -144,11 +144,25 @@ This is also a hook you can use to [create registries](./app-config.md#specconfg
 
 #### onBeforeAppBootstrapped(bootstrapper: Bootstrapper)
 Called before `Component#register` is called.
-You can register specs early if you'd like.
-This is also a good hook to [configure app configs](./app-config.md) (which you can access using `this.config`)
+
+This hook can be used to register specs early and to [configure app configs](./app-config.md) (which you can access using `this.config`)
+
+```javascript
+@component("@yuzu/my-component")
+export default class MyComponent {
+    onBeforeAppBootstrapped(bootstrapper) {
+        this.config.items.push(5);
+        bootstrapper.register(new SpecRegistration(
+            // .. Spec objects
+        ));
+    }
+}
+```
 
 #### onAppComponentsRegistered(bootstrapper: Bootstrapper)
 All components have been registered with their specs. Here is your last chance to add to the spec.
+You can register the same way you would in the `onBeforeAppBootstrapped`.
+Here you wouldn't alter configs as components have already registered their objects.
 
 #### onAppBootstrapped(container: IocContainer)
 The DI system has configured the container, and it is available to pull objects from.
