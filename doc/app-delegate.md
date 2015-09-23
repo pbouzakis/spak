@@ -67,9 +67,6 @@ The `on` hooks are optional and allow you to kick into the [`App.run` lifecycle.
 #### `handleRunError` *(Required)
 The `handleRunError` is used if there is a fatal error during app bootstrap. This method should tear down your splash page and provide an error to the user.
 
-#### `handleUncaughtError` *(Required)
-The `handleUncaughtError` is for any other error that occurs after `onReady` that is not handled. Up to the delegate for how best to handle.
-
 ## ProvidedAppDelegate
 When writing unit tests for a component or prototyping, if you are writing a module that depends on an App provider, you will still need to call `App.run` somewhere in your code to ensure the App providers exist. This means the delegate you inject `App.run` with must provide a delegate with required template methods implemented.
 

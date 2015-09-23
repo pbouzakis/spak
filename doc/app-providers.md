@@ -66,7 +66,7 @@ class CriticalThing {
             this._logger.log("things that make you go hmm.");
         }
     }
-    
+
     get _logger() { // Best to use a getter, since logger might not be available in the constructor.
         return App.logger("orders");
     }
@@ -104,4 +104,21 @@ class UserProfileUI {
 The default implementation from YepApp will simply return the key back.
 
 ### Uncaught errors
-The uncaught error handling is not something modules will call directly, however, the system, via the `AppDelegate`, will ensure there is some module in charge of listening for uncaught errors. In addition, the `AppDelegate` will be responsible for handling these errors. [Check the `AppDelegate` docs for more on error handling.](./app-delegate.md).
+The uncaught error handling is not something modules will call directly, however, the system, via the `AppDelegate`, will ensure there is some module in charge of listening for uncaught errors. [Check the `AppDelegate` docs for more on error handling.](./app-delegate.md).
+
+Once `UncaughtErrors` is told to listen it is responsible for not only listening but making sure something is done about these errors (either logging or presenting to the user that something went wrong).
+
+```typescript
+interface UncaughtErrors {
+    listen() {
+    }
+    handleUncaughtError(normalizedError) {
+    }
+}
+```
+
+#### `UncaughtErrors#listen`
+Start listening for uncaught errors.
+
+#### `UncaughtErrors#handleUncaughtError`
+The `handleUncaughtError` is for any other error that occurs after `onReady` that is not handled.
