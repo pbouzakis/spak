@@ -48,7 +48,8 @@ describe("App", function () {
                 listen: sinon.spy((uncaughtErrorHandler) => {
                     this.uncaughtErrorHandler = uncaughtErrorHandler;
                 }),
-                handleUncaughtError: sinon.stub()
+                handleUncaughtError: sinon.stub(),
+                handleActionError: sinon.stub()
             };
             this.localizedPath = "localizedPath";
             this.delegateHandlers = {
@@ -248,6 +249,22 @@ describe("App", function () {
 
                     it("should exec the action", () => {
                         this.didSomethingFromAction.should.have.been.calledWith(this.opts);
+                    });
+                });
+
+                describe("when the action throws an error", () => {
+                    beforeEach(() => {
+                        this.didSomethingFromAction.throws(new Error("Oops"));
+
+                        return App.instance().dispatchAction("doSomething").catch((er) => this.error === er);
+                    });
+
+                    it("should rejected the dispatch", () => {
+                        global.expect(this.error).to.be.instanceof(Error);
+                    });
+
+                    it("should message uncaught errors to handle the action error", () => {
+                        this.uncaughtErrors.handleActionError.should.have.been.calledWith(this.error);
                     });
                 });
 
