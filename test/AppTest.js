@@ -47,7 +47,8 @@ describe("App", function () {
             this.uncaughtErrors = {
                 listen: sinon.spy((uncaughtErrorHandler) => {
                     this.uncaughtErrorHandler = uncaughtErrorHandler;
-                })
+                }),
+                handleUncaughtError: sinon.stub()
             };
             this.localizedPath = "localizedPath";
             this.delegateHandlers = {
@@ -59,7 +60,7 @@ describe("App", function () {
                 onBeforeBootstrapped: sinon.stub(),
                 onComponentsRegistered: sinon.stub(),
                 onBootstrapped: sinon.stub(),
-                handleUncaughtError: sinon.stub()
+                handleRunError: sinon.stub()
             };
         });
 
@@ -222,17 +223,7 @@ describe("App", function () {
             });
 
             it("should ask uncaught errors to listen", () => {
-                this.uncaughtErrors.listen.should.have.been.calledWith(sinon.match.func);
-            });
-
-            describe("when an uncaught error occurs", () => {
-                beforeEach(() => {
-                    this.error = new Error("App is b0rked");
-                    this.triggerError(this.error);
-                });
-                it("should delegate to the uncaught errors handler", () => {
-                    this.delegateHandlers.handleUncaughtError.should.have.been.calledWith(this.error);
-                });
+                this.uncaughtErrors.listen.should.have.been.called;
             });
 
             // Use instance method rather than  static to get promise returned.
