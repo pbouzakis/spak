@@ -110,10 +110,9 @@ Once `UncaughtErrors` is told to listen it is responsible for not only listening
 
 ```typescript
 interface UncaughtErrors {
-    listen() {
-    }
-    handleUncaughtError(normalizedError) {
-    }
+    listen();
+    handleUncaughtError(normalizedError);
+    handleActionError(error);
 }
 ```
 
@@ -122,3 +121,6 @@ Start listening for uncaught errors.
 
 #### `UncaughtErrors#handleUncaughtError`
 The `handleUncaughtError` is for any other error that occurs after `onReady` that is not handled.
+
+#### `UncaughtErrors#handleActionError`
+The `handleActionError` is for error not caught by an action. Usually a critical error that the action can not handle itself and is rethrown.
