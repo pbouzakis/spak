@@ -8,11 +8,11 @@
 You can pass as many options as you want. They are all `merged` (using underscore's extend).
 var cfg = new App.Config(opt1, opt2, opt3);
 ```
-*Be careful with nested options, options are deeply copied when merged*
+*Be careful with nested options, options are NOT deeply copied when merged*
 
 An app config must be passed as the 2nd argument to `App.run`.
 
-```
+```javascript
 var opt1 = { size: 100 };
 var opt2 = { color: blue };
 var opt3 = { size: 200 };
@@ -49,10 +49,10 @@ export default class MyComponent {
 }
 
 // Then another component and alter this config
-@component(@app/other-component)
+@component("@app/other-component")
 export default class OtherComponent {
     onBeforeAppBootstrapped() { // Before register called on my-component, alter config settings
-        this.config.colors = ["red", "green", "blue"];
+        this.config.colors.push(...["red", "green", "blue"]);
     }
 }
 ```
@@ -93,6 +93,12 @@ registry.lookupWhere((item) => {
 
 ## SpecConfig
 You can combine the registry with a `SpecConfig` to make configuring your objects even easier.
+The concept is the same as regular `App.config`. You initalize your `SpecConfig` in `onAppConfig`, other components can register with it during `onBeforeAppBootstrapped`. By the register hook, you can have spec config fully registered and ready for us to be put into the DI spec.
+
+### RegistrySpec
+The `RegistrySpec` is what you can place inside your `SpecRegistration` to turn your `SpecConfig` into a `Registry` object that your objects can use.
+
+### @component decorator
 
 When using the `@component` decorator you are provided with `createSpecConfig`, `addSpecConfig`, and `specConfig` helpers methods.
 
@@ -101,38 +107,48 @@ The `create/add` methods are used before `register`. Then when registering your 
 *NOTE: The SpecConfig is also an instance of a `Registry`. Don't confuse this with the registry created by the DI system.*
 
 ```javascript
-@component("@app/other-component")
-export default class OtherComponent {
-    onAppConfig() { // Before register called on my-component, create a SpecConfig
-        this.mappers = this.createSpecConfig("mappers");
-
-        // Alternative `add` api.
-        // Useful if you have a custom registry you'd like to use.
+@component("@app/some-component")
+export default class SomeComponent {
+    onAppConfig() { // 
+        this.mappers = this.createSpecConfig("mappers"); // Init/create your SpecConfig.
+        // Alternative `add` api. Useful if you have a custom registry you'd like to use.
         // this.mapper = this.addSpecConfig(new CustomSpecConfig("mappers");
     }
     register() {
         return new SpecRegistration(
-            // Inject w/ a `SpecConfig` and the DI system will create a registry object that other objects can now depend on.
-            new SpecRegistry(this.mappers),
+            new SpecRegistry(this.mappers), // `this.mappers` is fully registered. Convert to a registry object via DI system.
             new SpecFromClass("repo", MyRepo)
+        );
+    }
+}
+
+// Another component would like to register with the mappers spec config.
+@component("@app/another-component")
+export default class AnotherComponent {
+    onBeforeAppBootstrapped() {
+        this.specConfig("mappers").register(new SpecRef("mylabsMapper")); // Notice you can reference roles in your spec!
+    }
+    register() {
+        return new SpecRegistration(
+            // `mylabsMappers` will be placed into the mappers spec config once it's dependencies have been satisified.
+            new SpecFromClass("mylabsMapper", MylabsMapper)
         );
     }
 }
 ```
 
-With the above in the spec, we could have the `MyRepo` class depend on that registry. That registry can be added to by any other component in the system providing new types of `mappers`.
+With the above in the spec, we could have the `MyRepo` class depend on that registry. That registry can be added to by any other component (as shown abe with `another-component`).
 
 ```javascript
 export default class MyRepo {
-    construct(mappers, storage) { // This is the registry!
+    construct(mappers, storage) { // MyRepo depends on the mappers registry. You will get it once it's ready to go.
        this._mappers = mappers;
        this._storage = storage;
     }
     fetch(id) {
        var data = this._storage.get(id);
-       // Awesome, I got lookup a mapper by type for my data object.
-       var mapper = this._mappers.lookupWhere({ type: data.type });
-       return mapper.map(data);
+       var mapper = this._mappers.lookupWhere({ type: data.type }); // Lookup in your registry to find the object you want.
+       return mapper.map(data); // Neat!
     }
 }
 ```

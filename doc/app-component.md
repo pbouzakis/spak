@@ -130,6 +130,11 @@ interface YepAppComponent {
 ```
 *NOTE: ATM `priority` is not being respected by `App.run`.*
 
+### @component decorator
+The component directory takes a name for your component to add to the metadata property of the component.
+
+In addition, the decorator adds some [helper methods for configs and registrys.](./app-config#component-decorator).
+
 ### Hooks
 
 #### onAppConfig(config: AppConfig)
