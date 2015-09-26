@@ -34,6 +34,58 @@ export default class ItemsInRepo {
 
 Add a `logger` getter property to your class specifying the namespace it belongs to.
 
+## emitter(events: Array, opts: { appPrefix: string })
+Mixin an emitter to your object. An `_emitter` method will added that you can call
+to mixin the emitter trait and return a `publish` method.
+
+If you provide an `appPrefix` in the opts object, the `_emitter` method will create a dual emitter. A dual emitter will cause the `publish` method to emit on the object AND the
+`App.events` bus. The event on the event bus will be prefixed with the `appPrefix` to namespace
+the event.
+
+This decorator using the `pubit-as-promised` package behind the scenes.
+
+```javascript
+
+// Simple emitter.
+
+@emitter(["added", "changed", "removed"])
+export default class ItemsInRepo {
+    constructor() {
+        this._publish = this._emitter();
+    }
+    create(name) {
+        // ... some sweet code
+        this._publish("added", item);
+    }
+}
+
+// `items` is an instanceof `ItemsInRepo`.
+
+items.on("added", updateUI); // Client code can listen via `on/once`. As well as stop w/ `off`.
+```
+
+Dual emitter
+
+// Simple emitter.
+
+@emitter(["added", "changed", "removed"], { appPrefix: "locker.items" })
+export default class ItemsInRepo {
+    constructor() {
+        this._publish = this._emitter();
+    }
+    create(name) {
+        // ... some sweet code
+        this._publish("added", item); // Event is published on `this` AND `App.events`.
+    }
+}
+
+// `items` is an instanceof `ItemsInRepo`.
+items.on("added", updateUI); // Client code can listen to an instance.
+
+App.events.on("locker.itemsAdded", logItemsAdded); // OR on the event bus w/ namespace.
+
+*NOTE The `pubit-as-promised` `publish.when` method works too!*
+
 ## component(nameOfComponent:string, additionalMetadata: Object)
 Adding metadata component can be done through the `component` decorator.
 This replaces the need to have to create a `metadata` getter that returns an object
