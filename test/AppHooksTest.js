@@ -8,7 +8,7 @@ class SampleHooks extends AppHooks {
         super();
         sinon.spy(this, "onAuthFoo");
         sinon.spy(this, "onLockerBar");
-        sinon.spy(this, "onStartup");
+        sinon.spy(this, "onAppReady");
         sinon.spy(this, "onDispose");
     }
     onAuthFoo() {
@@ -58,7 +58,7 @@ describe("AppHooks", function () {
         });
 
         it("should have called the `onAppReady` template method", () => {
-            this.hooks.onStartup.should.have.been.called;
+            this.hooks.onAppReady.should.have.been.called;
         });
 
         describe("when events are published", () => {
