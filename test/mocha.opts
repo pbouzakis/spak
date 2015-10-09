@@ -1,4 +1,4 @@
---compilers js:babel/register
+--compilers js:test/support/registerBabel
 --reporter spec
 --require test/support/setup
 --check-leaks

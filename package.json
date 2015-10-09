@@ -27,7 +27,7 @@
   "browserify": {
     "transform": [
       [
-        "babelify"
+        "babelify", { "optional": ["es7.decorators"] }
       ]
     ]
   },
