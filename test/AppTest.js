@@ -27,6 +27,7 @@ describe("App", function () {
             App.should.itself.respondTo("Config");
             App.should.itself.respondTo("Workflow");
             App.should.itself.respondTo("WorkflowStep");
+            App.should.itself.respondTo("UncaughtErrors");
         });
     });
 
