@@ -15,6 +15,7 @@ A micro application framework providing the following:
 - [app workflow](./doc/app-workflows.md)
 - [dependency injection wiring](./doc/di.md)
 - [ES decorators](./doc/decorators.md)
+- [Base Uncaught Error](./doc/uncaught-errors.md)
 
 ### Docs
 
