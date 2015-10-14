@@ -15,6 +15,7 @@
 - [Dependency Inject system](./di.md)
 - [Bundled decorators](./decorators.md)
 - [Testing your components](./testing.md)
+- [Commong Issues and Tips](./tips.md)
 
 ## `App`
 
