@@ -66,5 +66,32 @@ describe("EventBus", function () {
             });
         });
     });
+
+    describe("when creating a dual emitter with a prefix w/ no dot", () => {
+        beforeEach(() => {
+            this.emitter = {};
+            this.emitter.publish = this.events.makeDualEmitter(
+                this.emitter, { events: ["added", "changed", "deleted"], prefix: "items" }
+            );
+        });
+
+        describe("when publishing on the emitter", () => {
+            beforeEach(() => {
+                this.localAddedListener = sinon.stub();
+                this.appAddedListener = sinon.stub();
+                this.emitter.on("added", this.localAddedListener);
+                this.events.on("items.added", this.appAddedListener);
+                this.emitter.publish("added", 10, true, "something");
+            });
+
+            it("should call the listener from the emitter", () => {
+                this.localAddedListener.should.have.been.calledWith(10, true, "something");
+            });
+
+            it("should call the listener from the emitter", () => {
+                this.appAddedListener.should.have.been.calledWith(this.emitter, 10, true, "something");
+            });
+        });
+    });
 });
 

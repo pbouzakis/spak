@@ -64,10 +64,11 @@ export default class ItemsInRepo {
 items.on("added", updateUI); // Client code can listen via `on/once`. As well as stop w/ `off`.
 ```
 
-Dual emitter
+### Dual emitter
 
 // Simple emitter.
 
+```javascript
 @emitter(["added", "changed", "removed"], { appPrefix: "locker.items" })
 export default class ItemsInRepo {
     constructor() {
@@ -83,6 +84,14 @@ export default class ItemsInRepo {
 items.on("added", updateUI); // Client code can listen to an instance.
 
 App.events.on("locker.itemsAdded", logItemsAdded); // OR on the event bus w/ namespace.
+```
+
+*The appPrefix if contains a prefix will append the event name and uppercase the first char. If there is no dot in the prefix, a dot will be appended, and the event will not be transformed*
+
+Example prefix
+
+- `{ appPrefix: "locker.items" }` with local event of "added" // Emits app event "locker.itemsAdded".
+- `{ appPrefix: "locker" }` with local event of "added" // Emits app event "locker.added".
 
 *NOTE The `pubit-as-promised` `publish.when` method works too!*
 
