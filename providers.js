@@ -7,4 +7,4 @@ import KeyWordLocalization from "./lib/providers/KeyWordLocalization";
 import SimpleUncaughtErrors from "./lib/providers/SimpleUncaughtErrors";
 
 export { ProvidedAppDelegate, TestApp,
-         SimpleSession, ConsoleLogger, NullLogger, KeyWordLocalization, SimpleUncaughtErrors }
+         SimpleSession, ConsoleLogger, NullLogger, KeyWordLocalization, SimpleUncaughtErrors };

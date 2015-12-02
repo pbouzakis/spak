@@ -1,4 +1,3 @@
-/*jshint expr: true */
 import _ from "underscore";
 import Registry from "../lib/Registry";
 import { SpecRegistration, SpecRef, CondSpecs,

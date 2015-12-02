@@ -8,7 +8,7 @@ exec("npm run lint", function (err, stdout, stderr) {
 
     var exitCode = 0;
     if (err) {
-        console.error("Pre commit hook FAILED! JSHint failed or an error occurred.")
+        console.error("Pre commit hook FAILED! ESLint failed or an error occurred.")
         console.log(stderr);
         exitCode = -1;
     }

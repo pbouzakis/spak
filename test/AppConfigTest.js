@@ -1,4 +1,3 @@
-/*jshint expr: true */
 import AppConfig from "../lib/AppConfig";
 
 function hasAllValues(config, values) {

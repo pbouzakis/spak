@@ -1,4 +1,3 @@
-/*jshint expr: true */
 import EventBus from "../lib/EventBus";
 
 describe("EventBus", function () {

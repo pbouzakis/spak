@@ -1,4 +1,3 @@
-/*jshint expr: true */
 import Registry from "../lib/Registry";
 
 describe("Registry", function () {
@@ -32,7 +31,7 @@ describe("Registry", function () {
             this.items = {
                 foo: createItem("foo", 1),
                 bar: createItem("bar", 2),
-                baz: createItem("baz", 3),
+                baz: createItem("baz", 3)
             };
             Object.keys(this.items).forEach((key) => {
                 this.registry.register(this.items[key]);

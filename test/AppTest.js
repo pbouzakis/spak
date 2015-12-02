@@ -1,4 +1,3 @@
-/*jshint expr: true */
 import App from "../lib/App";
 import defaultAppArgs from "../lib/defaultAppArgs";
 import { defaultsWith } from "../lib/defaultAppArgs";
