@@ -118,13 +118,13 @@ export default class MyComponent {
 The above shows 3 roles being provided. The `register` method returns a `SpecRegistration` will 3 different ways to provide roles.
 You can pass any many individual spec objects as arguments as you want.
 
-If you are hooking into a lifecycle method, you can use the `Bootstrapper.specs.addRegistration` method.
+If you are hooking into a lifecycle method, you can use the `Bootstrapper.specs.register` method.
 
 ```javascript
 @component("@app/my-component")
 export default class MyComponent {
     onBeforeAppBoostrapped(bootstrapper) {
-        bootstrapper.specs.addRegistration(
+        bootstrapper.specs.register(
             new SpecRegistration(
                 new SpecFromClass("syncService", SyncService)
             )
