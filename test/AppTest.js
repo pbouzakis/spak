@@ -130,7 +130,7 @@ describe("App", function () {
 
             it("should register the components", () => {
                 this.componentList.every((component) => component.register.calledWithMatch(
-                    (specs) => typeof specs.wire === "function" // Checking for a spec like object.
+                    (specs) => typeof specs.build === "function" // Checking for a spec like object.
                 )).should.be.true;
             });
 

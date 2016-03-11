@@ -24,10 +24,11 @@ The following [template methods](https://en.wikipedia.org/wiki/Template_method_p
 
 ```typescript
 interface App.Delegate {
+    createActions(commands: Array<object>);
     createBootstrapper(components: Array<YepAppComponent>);
     createEventBus();
+    createSpecs(): [Specifications](./specifications.md);
     createWorkflows();
-    createActions(commands: Array<object>);
     provideSession();
     provideLogger();
     provideLocalize();
