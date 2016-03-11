@@ -42,6 +42,14 @@ describe("Registry", function () {
             this.registry.all().length.should.equal(3);
         });
 
+        it("should be able to check if an item is registered by name", () => {
+            this.registry.has("foo").should.be.true;
+        });
+
+        it("should be able to check if an item is registered by criteria", () => {
+            this.registry.hasWhere(item => item.value === 1).should.be.true;
+        });
+
         it("should be able to lookup by name", () => {
             Object.keys(this.items).every((key) => {
                 var item = this.items[key];
