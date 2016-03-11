@@ -1,5 +1,5 @@
-# yep-app
-A micro application framework providing the following:
+# spak
+A micro application toolkit for single page applications providing the following:
 
 - Top level / root object that [provides common application resources](./doc/app-providers.md)
   - current client session
@@ -13,7 +13,7 @@ A micro application framework providing the following:
 - [event command bus](./doc/app-actions-and-events.md#events)
 - [hooks](./doc/app-hooks.md)
 - [app workflow](./doc/app-workflows.md)
-- [dependency injection wiring](./doc/di.md)
+- [registration system](./doc/spec-registry.md)
 - [ES decorators](./doc/decorators.md)
 - [Base Uncaught Error](./doc/uncaught-errors.md)
 

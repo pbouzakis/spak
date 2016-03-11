@@ -1,13 +1,12 @@
 {
-  "name": "@yuzu/yep-app",
-  "version": "0.21.1",
-  "description": "Modules for building a yep app.",
+  "name": "spak",
+  "version": "0.22.0",
+  "description": "Kit for building single page applications.",
   "main": "index.js",
   "dependencies": {
     "pubit-as-promised": "^1.1.2",
     "q": "^1.4.1",
     "underscore": "^1.7.0",
-    "wire": "^0.10.11",
     "workflowit": ">=0.1.0"
   },
   "devDependencies": {
@@ -32,17 +31,15 @@
       ]
     ]
   },
-  "author": "YuzuJS",
-  "contributors": [
-    "Paul Bouzakis <PBouzakis@yuzu.com>"
-  ],
+  "author": "Paul Bouzakis <PBouzakis@yuzu.com>",
+  "contributors": [],
   "repository": {
     "type": "git",
-    "url": "git://github.com/YuzuJS/yep-app.git"
+    "url": "git://github.com/pbouzakis/spak.git"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/YuzuJS/yep-app/issues"
+    "url": "https://github.com/pbouzakis/spak/issues"
   },
-  "homepage": "https://github.com/YuzuJS/yep-app"
+  "homepage": "https://github.com/pbouzakis/spak"
 }
