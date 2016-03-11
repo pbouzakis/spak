@@ -28,6 +28,7 @@ interface App.Delegate {
     createBootstrapper(components: Array<YepAppComponent>);
     createEventBus();
     createSpecs(): [Specifications](./specifications.md);
+    createSpecsBuilder(): [SpecificationsBuilder](./specifications.md);
     createWorkflows();
     provideSession();
     provideLogger();

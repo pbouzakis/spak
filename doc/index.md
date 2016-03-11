@@ -12,7 +12,7 @@
 - [Custom functionality via AppDelegate](./app-delegate.md)
 - [How the app is started, bootstrap and run](./app-run.md)
 - [App workflows](./app-workflows.md)
-- [Dependency Inject system](./di.md)
+- [Spec Registry](./app-spec-registry.md)
 - [Bundled decorators](./decorators.md)
 - [Testing your components](./testing.md)
 - [Commong Issues and Tips](./tips.md)
