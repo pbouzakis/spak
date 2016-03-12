@@ -1,4 +1,4 @@
-# spak
+# spåK
 A micro application toolkit for single page applications providing the following:
 
 - Top level / root object that [provides common application resources](./doc/app-providers.md)
