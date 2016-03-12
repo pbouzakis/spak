@@ -33,3 +33,5 @@ This script provides:
 
 - pre commit: Lints code before commit is added to history.
 - pre push: Runs tests before code is pushed up to remote.
+
+![Spak](doc/images/SpakBubble.png )
