@@ -8,12 +8,12 @@ A micro application toolkit for single page applications providing the following
   - logging
   - uncaught error handling
 - [component based architecture](./doc/app-component.md)
+- [component specification system](./doc/specifications.md)
 - [application configuration](./doc/app-config.md)
 - [action dispatcher](./doc/app-actions-and-events.md#actions)
 - [event command bus](./doc/app-actions-and-events.md#events)
 - [hooks](./doc/app-hooks.md)
 - [app workflow](./doc/app-workflows.md)
-- [registration system](./doc/spec-registry.md)
 - [ES decorators](./doc/decorators.md)
 - [Base Uncaught Error](./doc/uncaught-errors.md)
 
