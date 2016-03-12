@@ -32,5 +32,5 @@ App.workflows.preload
     .addStep(new App.WorkflowStep("ui", renderUI));
 ```
 
-Internally, `yep-app` uses the npm package `workflowit`.
+Internally, `spak` uses the npm package `workflowit`.
 For more details please see docs for [workflowit package](https://github.com/YuzuJS/workflowit)

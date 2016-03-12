@@ -1,18 +1,18 @@
-# yep-app docs
+# spak docs
 
 ## Quick Links
 
 - [App API](#app-interface)
 - [App providers](./app-providers.md)
-- [Philosophy of `yep-app`](./philosophy.md)
+- [Philosophy of `spak`](./philosophy.md)
 - [Application components](./app-component.md)
 - [Application action and events](./app-actions-and-events.md)
 - [Application hooks](./app-hooks.md)
 - [Application configuration (including registries)](./app-config.md)
+- [App Specifications](./specifications.md)
 - [Custom functionality via AppDelegate](./app-delegate.md)
-- [How the app is started, bootstrap and run](./app-run.md)
+- [App Bootstrapper/Component Lifecycle](./app-run.md)
 - [App workflows](./app-workflows.md)
-- [Spec Registry](./app-spec-registry.md)
 - [Bundled decorators](./decorators.md)
 - [Testing your components](./testing.md)
 - [Commong Issues and Tips](./tips.md)
@@ -44,7 +44,8 @@ interface App {
     static events: EventBus;
     static dispatchAction(actionName: string, opts: Object);
     static config: AppConfig;
-    bootstrapper: Bootstrapper;
+    static bootstrapper: Bootstrapper;
+    static container: IocContainer;
 }
 ```
 

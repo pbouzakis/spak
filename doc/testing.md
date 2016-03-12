@@ -1,6 +1,6 @@
-# Testing yep-app components
+# Testing spak components
 
-If you're using the features `yep-app` has to offer, there are a couple additional steps you'll need to take in order to test your yep-app component:
+If you're using the features `spak` has to offer, there are a couple additional steps you'll need to take in order to test your `spak` component:
 
 ### Make sure your tests support Babel
 
@@ -10,7 +10,7 @@ Create a `registerBabel` file in your `test/support` folder with the following:
 var register = require("babel/register");
 
 register({
-    ignore: /node_modules(?:\/|\\)(?!@yuzu)/,
+    ignore: /node_modules(?:\/|\\)(?!@your-organization)/,
     optional: ["es7.decorators"] // If you're using decorators, you'll need this too.
 });
 ```
@@ -24,12 +24,12 @@ Add it to your `mocha.opts` file.
 
 You'll need to run the App before running your tests to ensure your modules can access app providers, the action dispatcher, etc. off the App object.
 
-The `yep-app` package comes with a `TestApp` object that provides all the necessary defaults and runs the app for you.
+The `spak` package comes with a `TestApp` object that provides all the necessary defaults and runs the app for you.
 
 You should import and run the `TestApp` in your `test/support/setup` module.
 
 ```js
-import { TestApp } from "@yuzu/yep-app/providers";
+import { TestApp } from "spak/providers";
 
 TestApp.run(); // That was easy!
 ```

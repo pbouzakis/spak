@@ -6,7 +6,7 @@ Quick Links
 - [Creating components](#creating-components)
 - [What goes inside the index module?](#example-index.js)
 
-`yep-app` promotes a component based architecture with the `App` object requiring a list of components to register with the application.
+`spak` promotes a component based architecture with the `App` object requiring a list of components to register with the application.
 For more on component based architecture, [see this article](https://msdn.microsoft.com/en-us/library/ee658117.aspx#ComponentBasedStyle).
 
 The application is provided to all components on startup of the app when calling `App.run`. This is done in the main module of your project (The first code run).
@@ -31,7 +31,7 @@ App.run(
 
 ```
 
-`yep-app` Components are made of js modules as well as docs, tests, styles, etc. that serve to encapsulate logical grouping of functionality about the system. In practice, that can translate into something as big a feature such as search (including UI, actions, models, db, etc) to a single module.
+`spak` Components are made of js modules as well as docs, tests, styles, etc. that serve to encapsulate logical grouping of functionality about the system. In practice, that can translate into something as big a feature such as search (including UI, actions, models, db, etc) to a single module.
 
 ## Components === `npm` packages.
 
@@ -87,8 +87,8 @@ An `npm` package can specify a main module, however, the standard is to have an 
 The following is a sample `index.js` module that would live in the root of the component.
 
 ```javascript
-import { component } from "@yuzu/yep-app/decorators";
-import { SpecRegistration, ActionSpec, SpecFromClass } from "@yuzu/yep-app/di";
+import { component } from "spak/decorators";
+import { SpecRegistration, ActionSpec, SpecFromClass } from "spak-di";
 import PlaceOrder from "./lib/actions/PlaceOrder";
 import OrderRepo from "./lib/repo/OrderRepoInStorage";
 import StoreGateway from "./lib/gateways/StoreGateway";
@@ -116,7 +116,7 @@ In addition, a `default export` class is **required** in order to register your 
 The `default export` should be a class that implements the following interface:
 
 ```typescript
-interface YepAppComponent {
+interface SpakComponent {
     metadata: { name }; // Info about the component (Minimum is name attribute);
     register(): ?Promise<void>; // Optionally return a promise if async is needed.
 
@@ -148,7 +148,7 @@ Called before `Component#register` is called.
 This hook can be used to register specs early and to [configure app configs](./app-config.md) (which you can access using `this.config`)
 
 ```javascript
-@component("@yuzu/my-component")
+@component("@app/my-component")
 export default class MyComponent {
     onBeforeAppBootstrapped(bootstrapper) {
         this.config.items.push(5);

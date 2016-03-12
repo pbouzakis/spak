@@ -25,7 +25,7 @@ The following [template methods](https://en.wikipedia.org/wiki/Template_method_p
 ```typescript
 interface App.Delegate {
     createActions(commands: Array<object>);
-    createBootstrapper(components: Array<YepAppComponent>);
+    createBootstrapper(components: Array<SpakComponent>);
     createEventBus();
     createSpecs(): [Specifications](./specifications.md);
     createSpecsBuilder(): [SpecificationsBuilder](./specifications.md);
@@ -43,7 +43,15 @@ interface App.Delegate {
 }
 ```
 
-#### `createBootstrapper(components: Array<YepAppComponent>)` *(Optional)*
+#### `createSpecs()` *(Optional)*
+Create the `Specifications` object for the application. [See the `Specfiications` docs for more](./app-run.md)
+`AppSpecifications` is the default implementation.
+
+#### `createSpecsBuilder()` *(Optional)*
+Create the `SpecificationsBuilder` object for the application. [See the `Specfiications` docs for more](./app-run.md)
+By default nothing is provided. `AppSpecifications` constructor provides the default implementation.
+
+#### `createBootstrapper(components: Array<SpakComponent>)` *(Optional)*
 Create the bootstrapper for the application. The bootstrapper is in charge of instantiated and starting the system up. [See the `App#run` lifecycle for details on how this works](./app-run.md)
 `App.Delegate` implementation return `Bootstrapper`.
 
@@ -72,7 +80,7 @@ The `handleRunError` is used if there is a fatal error during app bootstrap. Thi
 ## ProvidedAppDelegate
 When writing unit tests for a component or prototyping, if you are writing a module that depends on an App provider, you will still need to call `App.run` somewhere in your code to ensure the App providers exist. This means the delegate you inject `App.run` with must provide a delegate with required template methods implemented.
 
-`yep-app` comes with `ProvidedAppDelegate` that does just that. It provides an implementation suitable for **NON PRODUCTION** environments. Bundled with a null logger, a localization module that just returns the key back, and an in memory simple and not useful session object.
+`spak` comes with `ProvidedAppDelegate` that does just that. It provides an implementation suitable for **NON PRODUCTION** environments. Bundled with a null logger, a localization module that just returns the key back, and an in memory simple and not useful session object.
 
 ### Using an AppDelegate
 

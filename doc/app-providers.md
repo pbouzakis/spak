@@ -1,6 +1,6 @@
 # App Providers
 
-The `App` object is a singleton root object for a `yep-app` application.
+The `App` object is a singleton root object for a `spak` application.
 Modules in the system can rely on the fact that the following resources will always be present in the application.
 
 - ClientSession
@@ -10,7 +10,7 @@ Modules in the system can rely on the fact that the following resources will alw
 - UncaughtError handling
 
 ## Default implementations
-The `yep-app` package comes bundled with default implementations. These objects are not suitable for `production` but can aid in debugging and unit tests.
+The `spak` package comes bundled with default implementations. These objects are not suitable for `production` but can aid in debugging and unit tests.
 
 The `ProvidedAppDelegate` module is a `AppDelegate`object with these defaults all set and ready for the application. When setting up a unit test, prototype or debugging environment, it might be a good idea to use this delegate. [Check the `AppDelegate` docs for more.](./app-delegate.md).
 
@@ -44,7 +44,7 @@ console.log(user.email); // That is nicer.
 
 ```
 
-The `yep-app` expects a `user` to look like the following (minimum interface):
+The `spak` expects a `user` to look like the following (minimum interface):
 
 ```typescript
 interface YepAppUser {
@@ -58,7 +58,7 @@ interface YepAppUser {
 All objects in the system should have the ability to log without going thru hoops.
 
 ```javascript
-import { App } from "@yuzu/yep-app";
+import { App } from "spak";
 
 class CriticalThing {
     somethingInteresting() {
@@ -92,7 +92,7 @@ Instead of hardcoding copy in the UI, objects should utilize the localize method
 from the app.
 
 ```javascript
-import { App } from "@yuzu/yep-app";
+import { App } from "spak";
 
 class UserProfileUI {
     get title() {

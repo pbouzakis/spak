@@ -2,7 +2,7 @@
 
 
 ## AppConfig
-`yep-app` comes with a simple object that provides configuration settings to the rest of the application.
+`spak` comes with a simple object that provides configuration settings to the rest of the application.
 
 ```
 You can pass as many options as you want. They are all `merged` (using underscore's extend).
@@ -61,7 +61,7 @@ export default class OtherComponent {
 When needing a more advanced configuration, components can utilize a `Registry`. A component can create a registry for other components/modules to register with. The registry implements a lookup API so the component that owns the registry can lookup by criteria for which objects it would like to use to configure it's DI spec.
 
 ```javascript
-import { Registry } from "@yuzu/yep-app";
+import { Registry } from "spak";
 
 // Later in your code
 var registry = new Registry("mappers"); // Give it a name.

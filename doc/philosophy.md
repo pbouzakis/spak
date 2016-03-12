@@ -1,6 +1,6 @@
 # Architecture and Philosophy
 
-`yep-app` encourages an architecture that separates the core logic of the application from the "details". In addition, the `App` class requires a list of components, thus promoting a [component based architecture.](https://msdn.microsoft.com/en-us/library/ee658117.aspx#ComponentBasedStyle)
+`spak` encourages an architecture that separates the core logic of the application from the "details". In addition, the `App` class requires a list of components, thus promoting a [component based architecture.](https://msdn.microsoft.com/en-us/library/ee658117.aspx#ComponentBasedStyle)
 
 ## What do you mean by "core logic"?
 A feature, module, functionality should be written without concerns of the details. This might not always be possible but it is a preferable way to start development, as it most likely that those details will change.

@@ -42,7 +42,7 @@ App.dispatchAction("addItem", { item: new Item() });
 A base class is available for actions. This base class includes a logger and easy access to the event bus.
 
 ```javascript
-import { Action } from "@yuzu/yep-app";
+import { Action } from "spak";
 
 class AddItem extends Action {
     get componentName() { return "addItem" }
@@ -75,7 +75,7 @@ Events should be namespaced using the following convention: `**namespace**.event
 
 
 ```javascript
-import { App } from "@yuzu/yep-app";
+import { App } from "spak";
 
 export function foo() {
     // Here we listen to an event
@@ -97,6 +97,6 @@ All events published by `App.events` can become be listened to automatically by 
 
 ### App namespaced events.
 Since the event bus is system wide, we can't list all events here.
-However, `yep-app` owns the `app` namespace.
+However, `spak` owns the `app` namespace.
 
 - `app.ready(app, delegate)` - Async event that is published right before the delegate.onReady is invoked.

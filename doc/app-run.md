@@ -77,11 +77,9 @@ The above showcases what App.run is used for, to start the application and ensur
 Same as `App#run` only a promise is returned.
 This should not be needed for production code, but might be helpful in test code where you might want to run the app and **THEN** run your test environment.
 
-
 ## Sequence diagram
 
 The following diagram shows the flow between the objects in order to get the app up and running.
-If anything throws an error, the `AppDelegate#handleRunError` will be called, so that app can tear down and alert the user that the app can't be started. See the [delegate docs for more](https://github.com/YuzuJS/yep-app/blob/8-24-15-docs-revamped/doc/app-delegate.md#errors)
+If anything throws an error, the `AppDelegate#handleRunError` will be called, so that app can tear down and alert the user that the app can't be started. See the [delegate docs for more](./app-delegate.md#errors)
 
 ![enter image description here](./images/app-bootstrap-lifecycle.png)
-[Open diagram](./images/yep-app-run-lifecycle9.png)

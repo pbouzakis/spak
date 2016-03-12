@@ -1,12 +1,12 @@
 # es decorators
 
-`yep-app` comes with decorators for common utilities.
-You can import them off of the special `@yuzu/yep-app/decorators` path.
+`spak` comes with decorators for common utilities.
+You can import them off of the special `spak/decorators` path.
 
 ## inject(...listOfDependencies)
 
 ```javascript
-import { inject } from "@yuzu/yep-app/decorators";
+import { inject } from "spak/decorators";
 
 @inject("fooCollection, storedFoos")
 export default class FooService {

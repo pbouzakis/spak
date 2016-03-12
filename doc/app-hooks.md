@@ -2,7 +2,7 @@
 
 There are times when a module is not initiated by a user action directly and instead relies on the system and application for startup.
 
-To make wiring up your module as easy as possible, `yep-app` exposes the class `AppHooks` which is base class to extend, where you can define hook methods that are automatically subscribed to on the `App.events` event bus.
+To make wiring up your module as easy as possible, `spak` exposes the class `AppHooks` which is base class to extend, where you can define hook methods that are automatically subscribed to on the `App.events` event bus.
 
 The `AppHooks` class comes with a decorator for declaring what events you like the base class to subscribe to.
 
@@ -11,7 +11,7 @@ Your method hooks just start with `on` and then follow the event name camel case
 *NOTE Do not include `app.ready`. Instead see the `onAppReady` hook below.*
 
 ```javascript
-import { AppHooks } from "@yuzu/yep-app";
+import { AppHooks } from "spak";
 
 @AppHooks.events("auth.signedIn", "sync.completed", "locker.itemAdded")
 export default class MyHooks extends AppHooks {
