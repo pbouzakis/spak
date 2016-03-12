@@ -227,6 +227,10 @@ describe("App", function () {
                 this.uncaughtErrors.listen.should.have.been.called;
             });
 
+            it("should expose the IocContainer", () => {
+                App.container.should.be.an("object");
+            });
+
             // Use instance method rather than  static to get promise returned.
             describe("when an action is triggered that was registered", () => {
                 describe("using it's name", () => {
