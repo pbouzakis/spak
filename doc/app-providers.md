@@ -47,7 +47,7 @@ console.log(user.email); // That is nicer.
 The `spak` expects a `user` to look like the following (minimum interface):
 
 ```typescript
-interface YepAppUser {
+interface SpakUser {
     id: string;
     email: string;
 }
@@ -76,7 +76,7 @@ class CriticalThing {
 The interface for the logger
 
 ```typescript
-interface YepAppLogger {
+interface SpakUserLogger {
     log();
     debug();
     info();
@@ -109,7 +109,7 @@ The uncaught error handling is not something modules will call directly, however
 Once `UncaughtErrors` is told to listen it is responsible for not only listening but making sure something is done about these errors (either logging or presenting to the user that something went wrong).
 
 ```typescript
-interface UncaughtErrors {
+interface SpakUncaughtErrors {
     listen();
     handleUncaughtError(normalizedError);
     handleActionError(error);

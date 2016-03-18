@@ -85,7 +85,7 @@ export function foo() {
     favorites.add(item);
     App.events.publish("user.favoritesStored", favorites);
 
-    // pubit-as-promised allows async promised
+    // pubit-as-promised allows async promises
     App.events.publish.when("user.favoritesStored", favorites).done(log);
 }
 

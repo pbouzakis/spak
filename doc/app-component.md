@@ -33,7 +33,9 @@ App.run(
 
 `spak` Components are made of js modules as well as docs, tests, styles, etc. that serve to encapsulate logical grouping of functionality about the system. In practice, that can translate into something as big a feature such as search (including UI, actions, models, db, etc) to a single module.
 
-## Components === `npm` packages.
+## Recommendation: Components === `npm` packages.
+
+Although nothing in `spak` dictates how components should be structured in the filesystem, we **highlight** recommend using an existing standard: **npm packages**!
 
 This allows shared components to be published (`npm` registry) and easily installed into an application via `npm install`. Although all components are expected to be reusable, they may only belong to one application. Therefore it is okay for components to be bundled locally into the application. We recommend [scoping these components](https://docs.npmjs.com/misc/scope) with `@app`.  We also recommend `npm` scopes for components you wish to publish but are private.
 
@@ -45,7 +47,7 @@ node_modules/
                 Search.js
         dialogs/
             lib/
-    @mycompany/         // published as private `npm` packages.
+    @my-company/         // published as private `npm` packages.
          orders/
              lib/
                  Order.js
@@ -53,15 +55,15 @@ node_modules/
 ```
 
 
-## Component structure
+### Component structure
 
-### Top level folders
+#### Suggested top level folders
 - doc (markdown files)
 - lib (source code)
 - test
 - node_modules
 
-### Suggested folders inside lib
+#### Suggested folders inside lib
 
 ```
     lib/
@@ -73,17 +75,17 @@ node_modules/
         models/
 ```
 
-### Top level files
+#### Top level files
 - package.json (with npm scripts for running githooks, [lint](https://github.com/YuzuJS/yep-eslint-config), and tests)
 - pre-commit and pre-push githook scripts
 - README.md
 - [lint](https://github.com/YuzuJS/yep-eslint-config) and gitignore configs
 - index.js main module
 
-### the main module (entry point)
+#### the main module (entry point)
 An `npm` package can specify a main module, however, the standard is to have an `index.js` in the root of the package. Components use the index module to declare what internal modules can be used by other other components, as well as a `default export` of a `YepAppComponent` class that can register the component with the system and specify what services it implements.
 
-## Example index.js
+### Example index.js
 The following is a sample `index.js` module that would live in the root of the component.
 
 ```javascript
@@ -161,11 +163,12 @@ export default class MyComponent {
 
 #### onAppComponentsRegistered(bootstrapper: Bootstrapper)
 All components have been registered with their specs. Here is your last chance to add to the spec.
+
 You can register the same way you would in the `onBeforeAppBootstrapped`.
 Here you wouldn't alter configs as components have already registered their objects.
 
 #### onAppBootstrapped(container: IocContainer)
-The DI system has configured the container, and it is available to pull objects from.
+The [component specification](./specifications.md) system has configured the container, and it is available to pull objects from.
 
 
 

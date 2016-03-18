@@ -12,7 +12,7 @@ interface UncaughtErrors {
 ```
 
 ## Base Class
-YepApp comes bundled with a base class `UncaughtErrors` which you can extend for app specific behavior.
+Spak comes bundled with a base class `UncaughtErrors` which you can extend for app specific behavior.
 It does most of the work for you, but the sub class must implement 2 methods.
 
 ### Implement `listen`
