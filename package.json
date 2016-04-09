@@ -1,6 +1,6 @@
 {
   "name": "spak",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "description": "Kit for building single page applications.",
   "main": "index.js",
   "dependencies": {
